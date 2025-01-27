@@ -1,4 +1,6 @@
-﻿namespace CTPortaria.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace CTPortaria.Entities
 {
     public class EmployeeModel : BaseModel
     {
@@ -6,6 +8,8 @@
         public string Cpf { get; set; }
         public string JobRole { get; set; }
         public bool IsActive { get; set; } = true;
+
+        [JsonIgnore]
         public List<GateLogModel> GateLogs { get; set; }
     }
 }

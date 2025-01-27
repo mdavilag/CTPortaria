@@ -1,4 +1,6 @@
-﻿namespace CTPortaria.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace CTPortaria.Entities
 {
     public class GateLogModel : BaseModel
     {
