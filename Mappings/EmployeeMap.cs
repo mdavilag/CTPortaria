@@ -13,12 +13,14 @@ namespace CTPortaria.Mappings
             builder.Property(x => x.Id)
                 .HasColumnName("Id")
                 .HasColumnType("int")
+                .IsRequired()
                 .ValueGeneratedOnAdd();
 
             builder.Property(x => x.Name)
                 .HasColumnName("Name")
                 .HasColumnType("VARCHAR(80)")
-                .HasMaxLength(80);
+                .HasMaxLength(80)
+                .IsRequired();
 
             builder.Property(x => x.Cpf)
                 .HasColumnName("Cpf")
@@ -27,10 +29,12 @@ namespace CTPortaria.Mappings
             builder.Property(x => x.JobRole)
                 .HasColumnName("JobRole")
                 .HasColumnType("VARCHAR(40)")
-                .HasMaxLength(40);
+                .HasMaxLength(40)
+                .IsRequired();
             builder.Property(x => x.IsActive)
                 .HasColumnName("IsActive")
-                .HasColumnType("bit");
+                .HasColumnType("bit")
+                .IsRequired();
             builder.HasMany(x => x.GateLogs)
                 .WithOne(x => x.Employee)
                 .HasForeignKey(x => x.EmployeeId)

@@ -1,4 +1,5 @@
 ﻿using CTPortaria.Entities;
+using CTPortaria.Mappings;
 using Microsoft.EntityFrameworkCore;
 
 namespace CTPortaria.Data
@@ -15,7 +16,10 @@ namespace CTPortaria.Data
         public DbSet<VehicleModel> Vehicles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.ApplyConfiguration(new UserMap());
+            modelBuilder.ApplyConfiguration(new EmployeeMap());
+            modelBuilder.ApplyConfiguration(new GateLogMap());
+            modelBuilder.ApplyConfiguration(new PackageMap());
+            modelBuilder.ApplyConfiguration(new VehicleMap());
 
         }
 
