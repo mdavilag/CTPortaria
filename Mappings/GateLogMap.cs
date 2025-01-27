@@ -14,6 +14,7 @@ namespace CTPortaria.Mappings
             builder.Property(x => x.Id)
                 .HasColumnName("Id")
                 .HasColumnType("int")
+                .IsRequired()
                 .ValueGeneratedOnAdd();
             builder.Property(x => x.VisitorName)
                 .HasColumnName("VisitorName")
@@ -25,13 +26,16 @@ namespace CTPortaria.Mappings
                 .HasMaxLength(20);
             builder.Property(x => x.EnteredAt)
                 .HasColumnName("EnteredAt")
-                .HasColumnType("Datetime");
+                .HasColumnType("Datetime")
+                .IsRequired();
+
             builder.Property(x => x.LeavedAt)
                 .HasColumnName("LeavedAt")
                 .HasColumnType("Datetime");
             builder.Property(x => x.CreatedAt)
                 .HasColumnName("CreatedAt")
-                .HasColumnType("Datetime");
+                .HasColumnType("Datetime")
+                .IsRequired();
 
             builder.HasOne(x => x.Employee)
                 .WithMany(x => x.GateLogs)
