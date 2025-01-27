@@ -20,8 +20,6 @@ namespace CTPortaria.Data
             modelBuilder.ApplyConfiguration(new GateLogMap());
             modelBuilder.ApplyConfiguration(new PackageMap());
             modelBuilder.ApplyConfiguration(new VehicleMap());
-
         }
-
     }
 }
