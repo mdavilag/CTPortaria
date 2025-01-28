@@ -1,18 +1,19 @@
 ﻿using CTPortaria.DTOs;
 using CTPortaria.Entities;
+using CTPortaria.Services.Shared;
 
 namespace CTPortaria.Services.Interfaces
 {
 
     public interface IEmployeeService
     {
-        Task<EmployeeServiceDTO> GetByNameAsync(string name);
-        Task<List<EmployeeServiceDTO>> GetAllAsync();
-        Task<EmployeeServiceDTO> GetByIdAsync(int id);
-        Task<EmployeeCreateDto> CreateAsync(EmployeeCreateDto employeeCreateDto);
-        Task<EmployeeServiceDTO> UpdateAsync(EmployeeServiceDTO employeeServiceDTO);
-        Task<bool> DeleteByIdAsync(int id);
-        Task<bool> ExistsById(int id);
+        Task<ResultService<EmployeeServiceDTO>> GetByNameAsync(string name);
+        Task<ResultService<List<EmployeeServiceDTO>>> GetAllAsync();
+        Task<ResultService<EmployeeServiceDTO>> GetByIdAsync(int id);
+        Task<ResultService<EmployeeServiceDTO>> CreateAsync(EmployeeCreateDto employeeCreateDto);
+        Task<ResultService<EmployeeServiceDTO>> UpdateAsync(EmployeeServiceDTO employeeServiceDTO);
+        Task<ResultService<bool>> DeleteByIdAsync(int id);
+        Task<ResultService<bool>> ExistsById(int id);
 
     }
 }
