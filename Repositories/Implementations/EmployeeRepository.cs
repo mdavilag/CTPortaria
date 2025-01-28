@@ -17,58 +17,28 @@ namespace CTPortaria.Repositories.Implementations
 
         public async Task<EmployeeModel> GetByNameAsync(string name)
         {
-            try
-            {
                 return await _context.Employees.FirstOrDefaultAsync(x => x.Name == name);
-            }
-            catch
-            {
-                return null;
-            }
         }
 
         public async Task<List<EmployeeModel>> GetAllAsync()
         {
-            try
-            {
                 return await _context.Employees.ToListAsync();
-            }
-            catch
-            {
-                return null;
-            }
         }
 
         public async Task<EmployeeModel> GetByIdAsync(int id)
         {
-            try
-            {
                 return await _context.Employees.FirstOrDefaultAsync(x => x.Id == id);
-            }
-            catch
-            {
-                return null;
-            }
         }
 
         public async Task<EmployeeModel> CreateAsync(EmployeeModel employeeToCreate)
         {
-            try
-            {
                 await _context.Employees.AddAsync(employeeToCreate);
                 await _context.SaveChangesAsync();
                 return employeeToCreate;
-            }
-            catch
-            {
-                return null;
-            }
         }
 
         public async Task<EmployeeModel> UpdateAsync(EmployeeModel employeeToUpdate)
         {
-            try
-            {
                 var exists = await _context.Employees.AnyAsync(x => x.Id == employeeToUpdate.Id);
 
                 if (exists == false)
@@ -90,17 +60,10 @@ namespace CTPortaria.Repositories.Implementations
                 await _context.SaveChangesAsync();
 
                 return employee;
-            }
-            catch
-            {
-                return null;
-            }
         }
 
         public async Task<bool> DeleteByIdAsync(int id)
         {
-            try
-            {
                 var exists = await _context.Employees.AnyAsync(x=>x.Id == id);
                 if (exists == false)
                 {
@@ -109,16 +72,9 @@ namespace CTPortaria.Repositories.Implementations
 
                 var userToDelete = await _context.Employees.FirstAsync(x=>x.Id == id);
                 _context.Employees.Remove(userToDelete);
-
                 await _context.SaveChangesAsync();
 
                 return true;
-
-            }
-            catch
-            {
-                return false;
-            }
         }
     }
 }
