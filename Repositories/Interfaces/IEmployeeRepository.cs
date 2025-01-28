@@ -8,8 +8,8 @@ namespace CTPortaria.Repositories.Interfaces
         Task<EmployeeModel> GetByNameAsync(string name);
         Task<List<EmployeeModel>> GetAllAsync();
         Task<EmployeeModel> GetByIdAsync(int id);
-        Task<EmployeeModel> CreateAsync(EmployeeCreateDto employeeToCreate);
-        Task<EmployeeModel> UpdateAsync();
-        Task<EmployeeModel> DeleteAsync();
+        Task<EmployeeModel> CreateAsync(EmployeeModel employeeToCreate);
+        Task<EmployeeModel> UpdateAsync(EmployeeModel employeeToUpdate);
+        Task<bool> DeleteByIdAsync(int id);
     }
 }
