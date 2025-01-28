@@ -16,7 +16,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<DataContext>();
 builder.Services.AddScoped<IEmployeeRepository,EmployeeRepository>();
-builder.Services.AddTransient<EmployeeValidator>();
+builder.Services.AddTransient<IEmployeeValidator, EmployeeValidator>();
 
 var app = builder.Build();
 

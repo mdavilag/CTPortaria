@@ -9,7 +9,7 @@ namespace CTPortaria.Services.Implementations
     public class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeRepository _repository;
-        private readonly EmployeeValidator _validator;
+        private readonly IEmployeeValidator _validator;
 
         public EmployeeService(IEmployeeRepository repository, EmployeeValidator validator)
         {
