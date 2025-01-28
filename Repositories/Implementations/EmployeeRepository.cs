@@ -39,12 +39,6 @@ namespace CTPortaria.Repositories.Implementations
 
         public async Task<EmployeeModel> UpdateAsync(EmployeeModel employeeToUpdate)
         {
-                var exists = await _context.Employees.AnyAsync(x => x.Id == employeeToUpdate.Id);
-
-                if (exists == false)
-                {
-                    return null;
-                }
 
                 var employee = await _context.Employees.FirstAsync(x => x.Id == employeeToUpdate.Id);
 
@@ -75,6 +69,15 @@ namespace CTPortaria.Repositories.Implementations
                 await _context.SaveChangesAsync();
 
                 return true;
+        }
+
+        public async Task<bool> ExistsById(int id)
+        {
+            if (await _context.Employees.AnyAsync(x => x.Id == id))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

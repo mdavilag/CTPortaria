@@ -11,5 +11,6 @@ namespace CTPortaria.Repositories.Interfaces
         Task<EmployeeModel> CreateAsync(EmployeeModel employeeToCreate);
         Task<EmployeeModel> UpdateAsync(EmployeeModel employeeToUpdate);
         Task<bool> DeleteByIdAsync(int id);
+        Task<bool> ExistsById(int id);
     }
 }
