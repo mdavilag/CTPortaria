@@ -9,7 +9,6 @@ namespace CTPortaria.Entities
         public string JobRole { get; set; }
         public bool IsActive { get; set; } = true;
 
-        [JsonIgnore]
-        public List<GateLogModel> GateLogs { get; set; }
+        [JsonIgnore] public List<GateLogModel> GateLogs { get; set; } = new List<GateLogModel>();
     }
 }
