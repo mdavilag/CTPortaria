@@ -41,7 +41,24 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<ResultService<List<EmployeeServiceDTO>>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var employees = await _repository.GetAllAsync();
+
+                var employeeDtos = employees.Select(employee => new EmployeeServiceDTO()
+                {
+                    Name = employee.Name,
+                    Cpf = employee.Cpf,
+                    JobRole = employee.JobRole,
+                    IsActive = employee.IsActive
+                });
+
+                return new ResultService<List<EmployeeServiceDTO>>(employeeDtos.ToList());
+            }
+            catch(Exception ex)
+            {
+                return new ResultService<List<EmployeeServiceDTO>>(ex.Message);
+            }
         }
 
         public async Task<ResultService<EmployeeServiceDTO>> GetByIdAsync(int id)
