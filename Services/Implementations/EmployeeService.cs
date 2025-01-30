@@ -63,7 +63,23 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<ResultService<EmployeeServiceDTO>> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var employee = await _repository.GetByIdAsync(id);
+            if (employee == null)
+            {
+                return new ResultService<EmployeeServiceDTO>("Usuário não encontrado");
+            }
+
+            var employeeDto = new EmployeeServiceDTO()
+            {
+                Name = employee.Name,
+                Cpf = employee.Cpf,
+                JobRole = employee.JobRole,
+                IsActive = employee.IsActive
+            };
+
+            return new ResultService<EmployeeServiceDTO>(employeeDto);
+
+
         }
 
         public async Task<ResultService<EmployeeServiceDTO>> CreateAsync(EmployeeCreateDto employeeCreateDto)
