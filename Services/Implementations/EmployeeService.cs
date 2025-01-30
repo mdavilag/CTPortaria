@@ -78,13 +78,12 @@ namespace CTPortaria.Services.Implementations
             };
 
             return new ResultService<EmployeeServiceDTO>(employeeDto);
-
-
         }
 
         public async Task<ResultService<EmployeeServiceDTO>> CreateAsync(EmployeeCreateDto employeeCreateDto)
         {
             throw new NotImplementedException();
+            // validar propriedades
         }
 
         public async Task<ResultService<EmployeeServiceDTO>> UpdateAsync(EmployeeServiceDTO employeeServiceDTO)
