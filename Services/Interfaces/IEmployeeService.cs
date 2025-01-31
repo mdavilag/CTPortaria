@@ -13,7 +13,6 @@ namespace CTPortaria.Services.Interfaces
         Task<ResultService<EmployeeServiceDTO>> CreateAsync(EmployeeCreateDto employeeCreateDto);
         Task<ResultService<EmployeeServiceDTO>> UpdateAsync(EmployeeServiceDTO employeeServiceDTO);
         Task<ResultService<bool>> DeleteByIdAsync(int id);
-        Task<ResultService<bool>> ExistsById(int id);
 
     }
 }

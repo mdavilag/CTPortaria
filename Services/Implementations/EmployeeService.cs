@@ -96,9 +96,5 @@ namespace CTPortaria.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public async Task<ResultService<bool>> ExistsById(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
