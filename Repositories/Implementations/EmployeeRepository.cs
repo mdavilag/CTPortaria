@@ -58,17 +58,13 @@ namespace CTPortaria.Repositories.Implementations
 
         public async Task<bool> DeleteByIdAsync(int id)
         {
-                var exists = await _context.Employees.AnyAsync(x=>x.Id == id);
-                if (exists == false)
-                {
-                    return false;
-                }
+            var userToDelete = await _context.Employees.FindAsync(id);
+            if (userToDelete == null) return false;
 
-                var userToDelete = await _context.Employees.FirstAsync(x=>x.Id == id);
-                _context.Employees.Remove(userToDelete);
-                await _context.SaveChangesAsync();
+            _context.Employees.Remove(userToDelete);
+            await _context.SaveChangesAsync();
 
-                return true;
+            return true;
         }
 
         public async Task<bool> ExistsById(int id)
