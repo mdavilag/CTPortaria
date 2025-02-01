@@ -75,8 +75,34 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<ResultService<EmployeeServiceDTO>> CreateAsync(EmployeeCreateDto employeeCreateDto)
         {
-            throw new NotImplementedException();
-            // validar propriedades
+            // Validate Properties
+            if (!_validator.ValidateName(employeeCreateDto.Name))
+            {
+                return new ResultService<EmployeeServiceDTO>("Nome inválido");
+            }
+
+            if (!_validator.ValidateCpf(employeeCreateDto.Cpf.Trim().Replace(".", "").Replace("-", "")))
+            {
+                return new ResultService<EmployeeServiceDTO>("Cpf inválido");
+            }
+
+            if (!_validator.ValidateJobRole(employeeCreateDto.JobRole))
+            {
+                return new ResultService<EmployeeServiceDTO>("Cargo inválido");
+            }
+
+            // Map
+            var employeeToCreate = mapCreateDtoToEmployeeModel(employeeCreateDto);
+            try
+            {
+                var result = await _repository.CreateAsync(employeeToCreate);
+                var resultDto = MapEmployeeToDto(result);
+                return new ResultService<EmployeeServiceDTO>(resultDto);
+            }
+            catch (Exception ex)
+            {
+                return new ResultService<EmployeeServiceDTO>("Erro ao criar");
+            }
         }
 
         public async Task<ResultService<EmployeeServiceDTO>> UpdateAsync(EmployeeServiceDTO employeeServiceDTO)
@@ -101,14 +127,14 @@ namespace CTPortaria.Services.Implementations
             return employeeDto;
         }
 
-        public EmployeeModel mapDtoToEmployeeModel(EmployeeServiceDTO employeeDto)
+        public EmployeeModel mapCreateDtoToEmployeeModel(EmployeeCreateDto employeeDto)
         {
             var employeeModel = new EmployeeModel()
             {
                 Name = employeeDto.Name,
-                Cpf = employeeDto.Cpf,
+                Cpf = employeeDto.Cpf.Trim().Replace(".","").Replace("-",""),
                 JobRole = employeeDto.JobRole,
-                IsActive = employeeDto.IsActive,
+                IsActive = true,
                 GateLogs = new List<GateLogModel>()
             };
             return employeeModel;
