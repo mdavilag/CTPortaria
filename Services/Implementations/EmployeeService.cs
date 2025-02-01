@@ -1,4 +1,5 @@
 ﻿using CTPortaria.DTOs;
+using CTPortaria.Entities;
 using CTPortaria.Repositories.Interfaces;
 using CTPortaria.Services.Interfaces;
 using CTPortaria.Services.Shared;
@@ -31,13 +32,7 @@ namespace CTPortaria.Services.Implementations
             }
                 // Mapear o model para o DTO
 
-            var employeeDto = new EmployeeServiceDTO()
-            {
-                Name = employee.Name,
-                Cpf = employee.Cpf,
-                JobRole = employee.JobRole,
-                IsActive = employee.IsActive
-            };
+                var employeeDto = MapEmployeeToDto(employee);
 
             return new ResultService<EmployeeServiceDTO>(employeeDto);
         }
@@ -48,7 +43,8 @@ namespace CTPortaria.Services.Implementations
             {
                 var employees = await _repository.GetAllAsync();
 
-                var employeeDtos = employees.Select(employee => new EmployeeServiceDTO()
+                var employeeDtos = employees
+                    .Select(employee => new EmployeeServiceDTO()
                 {
                     Name = employee.Name,
                     Cpf = employee.Cpf,
@@ -72,13 +68,7 @@ namespace CTPortaria.Services.Implementations
                 return new ResultService<EmployeeServiceDTO>("Usuário não encontrado");
             }
 
-            var employeeDto = new EmployeeServiceDTO()
-            {
-                Name = employee.Name,
-                Cpf = employee.Cpf,
-                JobRole = employee.JobRole,
-                IsActive = employee.IsActive
-            };
+            var employeeDto = MapEmployeeToDto(employee);
 
             return new ResultService<EmployeeServiceDTO>(employeeDto);
         }
@@ -99,5 +89,29 @@ namespace CTPortaria.Services.Implementations
             throw new NotImplementedException();
         }
 
+        public EmployeeServiceDTO MapEmployeeToDto(EmployeeModel employeeModel)
+        {
+            var employeeDto = new EmployeeServiceDTO()
+            {
+                Name = employeeModel.Name,
+                Cpf = employeeModel.Cpf,
+                JobRole = employeeModel.JobRole,
+                IsActive = employeeModel.IsActive
+            };
+            return employeeDto;
+        }
+
+        public EmployeeModel mapDtoToEmployeeModel(EmployeeServiceDTO employeeDto)
+        {
+            var employeeModel = new EmployeeModel()
+            {
+                Name = employeeDto.Name,
+                Cpf = employeeDto.Cpf,
+                JobRole = employeeDto.JobRole,
+                IsActive = employeeDto.IsActive,
+                GateLogs = new List<GateLogModel>()
+            };
+            return employeeModel;
+        }
     }
 }
