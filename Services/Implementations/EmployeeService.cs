@@ -134,7 +134,20 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<ResultService<bool>> DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (!await _repository.ExistsById(id))
+                {
+                    return new ResultService<bool>("Usuário não encontrado");
+                }
+
+                _repository.DeleteByIdAsync(id);
+                return new ResultService<bool>(true);
+            }
+            catch(Exception ex)
+            {
+                return new ResultService<bool>($"Não foi possivel excluir o usuario: {ex.Message}");
+            }
         }
 
         public EmployeeServiceDTO MapEmployeeToDto(EmployeeModel employeeModel)
