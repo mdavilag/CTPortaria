@@ -105,9 +105,31 @@ namespace CTPortaria.Services.Implementations
             }
         }
 
-        public async Task<ResultService<EmployeeServiceDTO>> UpdateAsync(EmployeeServiceDTO employeeServiceDTO)
+        public async Task<ResultService<EmployeeServiceDTO>> UpdateAsync(EmployeeUpdateDTO employeeUpdateDto)
         {
-            throw new NotImplementedException();
+            if (!await _repository.ExistsById(employeeUpdateDto.Id))
+            {
+                return new ResultService<EmployeeServiceDTO>("Usuário não localizado");
+            }
+
+            var inputEmployee = new EmployeeModel()
+            {
+                Id = employeeUpdateDto.Id,
+                Name = employeeUpdateDto.Name,
+                Cpf = employeeUpdateDto.Cpf,
+                IsActive = employeeUpdateDto.IsActive,
+                JobRole = employeeUpdateDto.JobRole
+            };
+            try
+            {
+                var result = await _repository.UpdateAsync(inputEmployee);
+                var resultDto = MapEmployeeToDto(result);
+                return new ResultService<EmployeeServiceDTO>(resultDto);
+            }
+            catch (Exception ex)
+            {
+                return new ResultService<EmployeeServiceDTO>($"Erro ao atualizar: {ex.Message}");
+            }
         }
 
         public async Task<ResultService<bool>> DeleteByIdAsync(int id)
