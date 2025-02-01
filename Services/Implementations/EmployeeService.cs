@@ -12,7 +12,7 @@ namespace CTPortaria.Services.Implementations
         private readonly IEmployeeRepository _repository;
         private readonly IEmployeeValidator _validator;
 
-        public EmployeeService(IEmployeeRepository repository, EmployeeValidator validator)
+        public EmployeeService(IEmployeeRepository repository, IEmployeeValidator validator)
         {
             _repository = repository;
             _validator = validator;
@@ -32,7 +32,7 @@ namespace CTPortaria.Services.Implementations
             }
                 // Mapear o model para o DTO
 
-                var employeeDto = MapEmployeeToDto(employee);
+            var employeeDto = MapEmployeeToDto(employee);
 
             return new ResultService<EmployeeServiceDTO>(employeeDto);
         }
