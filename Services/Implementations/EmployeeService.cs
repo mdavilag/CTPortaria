@@ -19,7 +19,10 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<ResultService<EmployeeServiceDTO>> GetByNameAsync(string name)
         {
-            if (_validator.ValidateName(name) == false) return null;
+            if (_validator.ValidateName(name) == false)
+            {
+                return new ResultService<EmployeeServiceDTO>("Nome não é válido, digite o nome completo");
+            }
             
             var employee = await _repository.GetByNameAsync(name);
             if (employee == null)
