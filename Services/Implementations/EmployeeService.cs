@@ -92,7 +92,7 @@ namespace CTPortaria.Services.Implementations
             }
 
             // Map
-            var employeeToCreate = mapCreateDtoToEmployeeModel(employeeCreateDto);
+            var employeeToCreate = MapCreateDtoToEmployeeModel(employeeCreateDto);
             try
             {
                 var result = await _repository.CreateAsync(employeeToCreate);
@@ -141,7 +141,7 @@ namespace CTPortaria.Services.Implementations
                     return new ResultService<bool>("Usuário não encontrado");
                 }
 
-                _repository.DeleteByIdAsync(id);
+                await _repository.DeleteByIdAsync(id);
                 return new ResultService<bool>(true);
             }
             catch(Exception ex)
@@ -161,8 +161,7 @@ namespace CTPortaria.Services.Implementations
             };
             return employeeDto;
         }
-
-        public EmployeeModel mapCreateDtoToEmployeeModel(EmployeeCreateDto employeeDto)
+        public EmployeeModel MapCreateDtoToEmployeeModel(EmployeeCreateDto employeeDto)
         {
             var employeeModel = new EmployeeModel()
             {

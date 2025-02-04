@@ -14,7 +14,7 @@ namespace CTPortaria.Services.Interfaces
         Task<ResultService<EmployeeServiceDTO>> UpdateAsync(EmployeeUpdateDTO employeeUpdateDto);
         Task<ResultService<bool>> DeleteByIdAsync(int id);
         EmployeeServiceDTO MapEmployeeToDto(EmployeeModel employeeModel);
-        EmployeeModel mapCreateDtoToEmployeeModel(EmployeeCreateDto employeeDto);
+        EmployeeModel MapCreateDtoToEmployeeModel(EmployeeCreateDto employeeDto);
 
     }
 }

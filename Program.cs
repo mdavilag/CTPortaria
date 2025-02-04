@@ -1,6 +1,8 @@
 using CTPortaria.Data;
 using CTPortaria.Repositories.Implementations;
 using CTPortaria.Repositories.Interfaces;
+using CTPortaria.Services.Implementations;
+using CTPortaria.Services.Interfaces;
 using CTPortaria.Utils.Validators;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +18,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<DataContext>();
 builder.Services.AddScoped<IEmployeeRepository,EmployeeRepository>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddTransient<IEmployeeValidator, EmployeeValidator>();
 
 var app = builder.Build();
