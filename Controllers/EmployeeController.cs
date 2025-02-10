@@ -18,7 +18,7 @@ namespace CTPortaria.Controllers
             _service = service;
         }
 
-        [HttpGet("v1/employee/getbyname/{name}")]
+        [HttpGet("v1/employee/name/{name}")]
         public async Task<IActionResult> GetByName([FromRoute] string name)
         {
             var employee = await _service.GetByNameAsync(name);
@@ -38,7 +38,17 @@ namespace CTPortaria.Controllers
             return Ok(new ResultViewModel<EmployeeDetailedViewModel>(employeeViewModel));
         }
 
-        [HttpPost("v1/employee/create")]
+        [HttpGet("v1/employee/")]
+        public async Task<IActionResult> GetAll()
+        {
+            var employeesResult = await _service.GetAllAsync();
+            if (!employeesResult.IsSucess)
+            {
+                return BadRequest(new ResultViewModel<EmployeeDetailedViewModel>(employeesResult.Errors));
+            }
+        }
+
+        [HttpPost("v1/employee/")]
         public async Task<IActionResult> Create([FromBody]EmployeeCreateDto employeeCreateDto)
         {
             var created =  await _service.CreateAsync(employeeCreateDto);
