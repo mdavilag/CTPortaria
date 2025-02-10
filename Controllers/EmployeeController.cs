@@ -46,6 +46,17 @@ namespace CTPortaria.Controllers
             {
                 return BadRequest(new ResultViewModel<EmployeeDetailedViewModel>(employeesResult.Errors));
             }
+
+            var employeesViewModelList = employeesResult.Data.Select(x => new EmployeeDetailedViewModel()
+            {
+                Name = x.Name,
+                Cpf = x.Cpf,
+                JobRole = x.JobRole,
+                IsActive = x.IsActive
+            }).ToList();
+
+            var resultViewModel = new ResultViewModel<List<EmployeeDetailedViewModel>>(employeesViewModelList);
+            return Ok(resultViewModel);
         }
 
         [HttpPost("v1/employee/")]
