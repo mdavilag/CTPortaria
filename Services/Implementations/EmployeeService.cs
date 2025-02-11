@@ -1,4 +1,5 @@
-﻿using CTPortaria.DTOs;
+﻿using AutoMapper;
+using CTPortaria.DTOs;
 using CTPortaria.Entities;
 using CTPortaria.Repositories.Interfaces;
 using CTPortaria.Services.Interfaces;
@@ -11,11 +12,13 @@ namespace CTPortaria.Services.Implementations
     {
         private readonly IEmployeeRepository _repository;
         private readonly IEmployeeValidator _validator;
+        private readonly IMapper _mapper;
 
-        public EmployeeService(IEmployeeRepository repository, IEmployeeValidator validator)
+        public EmployeeService(IEmployeeRepository repository, IEmployeeValidator validator, IMapper mapper)
         {
             _repository = repository;
             _validator = validator;
+            _mapper = mapper;
         }
 
         public async Task<ResultService<EmployeeServiceDTO>> GetByNameAsync(string name)
