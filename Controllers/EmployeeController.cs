@@ -74,13 +74,15 @@ namespace CTPortaria.Controllers
                 return BadRequest(new ResultViewModel<EmployeeDetailedViewModel>(employee.Errors));
             }
 
-            var employeeViewModel = new EmployeeDetailedViewModel()
-            {
-                Name = employee.Data.Name,
-                Cpf = employee.Data.Cpf,
-                JobRole = employee.Data.JobRole,
-                IsActive = employee.Data.IsActive
-            };
+            //var employeeViewModel = new EmployeeDetailedViewModel()
+            //{
+            //    Name = employee.Data.Name,
+            //    Cpf = employee.Data.Cpf,
+            //    JobRole = employee.Data.JobRole,
+            //    IsActive = employee.Data.IsActive
+            //};
+
+            var employeeViewModel = _mapper.Map<EmployeeDetailedViewModel>(employee.Data);
 
 
             return Ok(new ResultViewModel<EmployeeDetailedViewModel>(employeeViewModel));
