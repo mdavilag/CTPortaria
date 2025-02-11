@@ -53,15 +53,17 @@ namespace CTPortaria.Controllers
                 return BadRequest(new ResultViewModel<EmployeeDetailedViewModel>(employeesResult.Errors));
             }
 
-            var employeesViewModelList = employeesResult.Data.Select(x => new EmployeeDetailedViewModel()
-            {
-                Name = x.Name,
-                Cpf = x.Cpf,
-                JobRole = x.JobRole,
-                IsActive = x.IsActive
-            }).ToList();
+            //var employeesViewModelList = employeesResult.Data.Select(x => new EmployeeDetailedViewModel()
+            //{
+            //    Name = x.Name,
+            //    Cpf = x.Cpf,
+            //    JobRole = x.JobRole,
+            //    IsActive = x.IsActive
+            //}).ToList();
 
-            var resultViewModel = new ResultViewModel<List<EmployeeDetailedViewModel>>(employeesViewModelList);
+            var employeesViewModel = _mapper.Map<List<EmployeeDetailedViewModel>>(employeesResult.Data);
+
+            var resultViewModel = new ResultViewModel<List<EmployeeDetailedViewModel>>(employeesViewModel);
             return Ok(resultViewModel);
         }
 
@@ -88,25 +90,25 @@ namespace CTPortaria.Controllers
             return Ok(new ResultViewModel<EmployeeDetailedViewModel>(employeeViewModel));
         }
 
-
         // HttpPosts
         [HttpPost("employee/")]
         public async Task<IActionResult> Create([FromBody]EmployeeCreateDto employeeCreateDto)
         {
             var created =  await _service.CreateAsync(employeeCreateDto);
             if (!created.IsSucess) return BadRequest(new ResultViewModel<EmployeeDetailedViewModel>(created.Errors));
-            var createdViewModel = new EmployeeDetailedViewModel()
-            {
-                Name = created.Data.Name,
-                Cpf = created.Data.Cpf,
-                JobRole = created.Data.JobRole,
-                IsActive = created.Data.IsActive
-            };
+            //var createdViewModel = new EmployeeDetailedViewModel()
+            //{
+            //    Name = created.Data.Name,
+            //    Cpf = created.Data.Cpf,
+            //    JobRole = created.Data.JobRole,
+            //    IsActive = created.Data.IsActive
+            //};
+
+            var createdViewModel = _mapper.Map<EmployeeDetailedViewModel>(created.Data);
+
             // Alterar a resposta de Ok para Created ou CreatedAtAction
             return Ok(new ResultViewModel<EmployeeDetailedViewModel>(createdViewModel));
         }
-
-
 
     }
 }
