@@ -1,8 +1,8 @@
-﻿namespace CTPortaria.DTOs
+﻿namespace CTPortaria.ViewModels
 {
-    public class EmployeeServiceDTO
+    public class EmployeeDetailedViewModel
     {
-        public int Id {get; set;}
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Cpf { get; set; }
         public string JobRole { get; set; }

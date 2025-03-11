@@ -11,10 +11,10 @@ namespace CTPortaria.Services.Interfaces
         Task<ResultService<List<EmployeeServiceDTO>>> GetAllAsync();
         Task<ResultService<EmployeeServiceDTO>> GetByIdAsync(int id);
         Task<ResultService<EmployeeServiceDTO>> CreateAsync(EmployeeCreateDto employeeCreateDto);
-        Task<ResultService<EmployeeServiceDTO>> UpdateAsync(EmployeeUpdateDTO employeeUpdateDto);
+        Task<ResultService<EmployeeServiceDTO>> UpdateAsync(int it, EmployeeUpdateDTO employeeUpdateDto);
         Task<ResultService<bool>> DeleteByIdAsync(int id);
         EmployeeServiceDTO MapEmployeeToDto(EmployeeModel employeeModel);
-        EmployeeModel mapCreateDtoToEmployeeModel(EmployeeCreateDto employeeDto);
+        EmployeeModel MapCreateDtoToEmployeeModel(EmployeeCreateDto employeeDto);
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using CTPortaria.DTOs;
+﻿using AutoMapper;
+using CTPortaria.DTOs;
 using CTPortaria.Entities;
 using CTPortaria.Repositories.Interfaces;
 using CTPortaria.Services.Interfaces;
@@ -11,11 +12,13 @@ namespace CTPortaria.Services.Implementations
     {
         private readonly IEmployeeRepository _repository;
         private readonly IEmployeeValidator _validator;
+        private readonly IMapper _mapper;
 
-        public EmployeeService(IEmployeeRepository repository, IEmployeeValidator validator)
+        public EmployeeService(IEmployeeRepository repository, IEmployeeValidator validator, IMapper mapper)
         {
             _repository = repository;
             _validator = validator;
+            _mapper = mapper;
         }
 
         public async Task<ResultService<EmployeeServiceDTO>> GetByNameAsync(string name)
@@ -46,6 +49,7 @@ namespace CTPortaria.Services.Implementations
                 var employeeDtos = employees
                     .Select(employee => new EmployeeServiceDTO()
                 {
+                    Id = employee.Id,
                     Name = employee.Name,
                     Cpf = employee.Cpf,
                     JobRole = employee.JobRole,
@@ -92,7 +96,7 @@ namespace CTPortaria.Services.Implementations
             }
 
             // Map
-            var employeeToCreate = mapCreateDtoToEmployeeModel(employeeCreateDto);
+            var employeeToCreate = MapCreateDtoToEmployeeModel(employeeCreateDto);
             try
             {
                 var result = await _repository.CreateAsync(employeeToCreate);
@@ -105,16 +109,16 @@ namespace CTPortaria.Services.Implementations
             }
         }
 
-        public async Task<ResultService<EmployeeServiceDTO>> UpdateAsync(EmployeeUpdateDTO employeeUpdateDto)
+        public async Task<ResultService<EmployeeServiceDTO>> UpdateAsync(int id, EmployeeUpdateDTO employeeUpdateDto)
         {
-            if (!await _repository.ExistsById(employeeUpdateDto.Id))
+            if (!await _repository.ExistsById(id))
             {
                 return new ResultService<EmployeeServiceDTO>("Usuário não localizado");
             }
 
             var inputEmployee = new EmployeeModel()
             {
-                Id = employeeUpdateDto.Id,
+                Id = id,
                 Name = employeeUpdateDto.Name,
                 Cpf = employeeUpdateDto.Cpf,
                 IsActive = employeeUpdateDto.IsActive,
@@ -141,7 +145,7 @@ namespace CTPortaria.Services.Implementations
                     return new ResultService<bool>("Usuário não encontrado");
                 }
 
-                _repository.DeleteByIdAsync(id);
+                await _repository.DeleteByIdAsync(id);
                 return new ResultService<bool>(true);
             }
             catch(Exception ex)
@@ -154,6 +158,7 @@ namespace CTPortaria.Services.Implementations
         {
             var employeeDto = new EmployeeServiceDTO()
             {
+                Id = employeeModel.Id,
                 Name = employeeModel.Name,
                 Cpf = employeeModel.Cpf,
                 JobRole = employeeModel.JobRole,
@@ -161,8 +166,7 @@ namespace CTPortaria.Services.Implementations
             };
             return employeeDto;
         }
-
-        public EmployeeModel mapCreateDtoToEmployeeModel(EmployeeCreateDto employeeDto)
+        public EmployeeModel MapCreateDtoToEmployeeModel(EmployeeCreateDto employeeDto)
         {
             var employeeModel = new EmployeeModel()
             {
