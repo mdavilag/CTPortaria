@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CTPortaria.Controllers
 {
     [ApiController]
-    [Route("v1")]
+    [Route("v1/employees")]
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _service;
@@ -21,9 +21,10 @@ namespace CTPortaria.Controllers
             _service = service;
             _mapper = mapper;
         }
-        // HttpGets
 
-        [HttpGet("employee/name/")]
+        #region Gets
+
+                [HttpGet("name")]
         public async Task<IActionResult> GetByName([FromQuery] string name)
         {
             var employee = await _service.GetByNameAsync(name);
@@ -44,7 +45,7 @@ namespace CTPortaria.Controllers
             return Ok(new ResultViewModel<EmployeeDetailedViewModel>(employeeViewModel));
         }
 
-        [HttpGet("employees/")]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var employeesResult = await _service.GetAllAsync();
@@ -67,7 +68,7 @@ namespace CTPortaria.Controllers
             return Ok(resultViewModel);
         }
 
-        [HttpGet("employee/id/{id:int}")]
+        [HttpGet("id/{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
             var employee = await _service.GetByIdAsync(id);
@@ -90,8 +91,12 @@ namespace CTPortaria.Controllers
             return Ok(new ResultViewModel<EmployeeDetailedViewModel>(employeeViewModel));
         }
 
-        // HttpPosts
-        [HttpPost("employee/")]
+        #endregion
+
+
+        #region Posts
+
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody]EmployeeCreateDto employeeCreateDto)
         {
             var created =  await _service.CreateAsync(employeeCreateDto);
@@ -107,8 +112,29 @@ namespace CTPortaria.Controllers
             var createdViewModel = _mapper.Map<EmployeeDetailedViewModel>(created.Data);
 
             // Alterar a resposta de Ok para Created ou CreatedAtAction
-            return Ok(new ResultViewModel<EmployeeDetailedViewModel>(createdViewModel));
+            return StatusCode(201, new ResultViewModel<EmployeeDetailedViewModel>(createdViewModel));
         }
+
+        #endregion
+
+        #region Puts
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] EmployeeUpdateDTO employeeDto)
+        {
+            var updated =await _service.UpdateAsync(employeeDto);
+            if (!updated.IsSucess)
+            {
+                return BadRequest(new ResultViewModel<EmployeeDetailedViewModel>(updated.Errors));
+            }
+
+            var updatedViewModel = _mapper.Map<EmployeeDetailedViewModel>(updated.Data);
+
+            return Ok(new ResultViewModel<EmployeeDetailedViewModel>(updatedViewModel));
+        }
+
+        #endregion
+
 
     }
 }

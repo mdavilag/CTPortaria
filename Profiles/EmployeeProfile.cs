@@ -11,6 +11,7 @@ namespace CTPortaria.AutoMapper
         {
             CreateMap<EmployeeModel, EmployeeServiceDTO>();
             CreateMap<EmployeeServiceDTO, EmployeeDetailedViewModel>();
+            CreateMap<EmployeeUpdateDTO, EmployeeDetailedViewModel>();
         }
     }
 }
