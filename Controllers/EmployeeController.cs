@@ -119,10 +119,10 @@ namespace CTPortaria.Controllers
 
         #region Puts
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] EmployeeUpdateDTO employeeDto)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update([FromRoute]int id, [FromBody] EmployeeUpdateDTO employeeDto)
         {
-            var updated =await _service.UpdateAsync(employeeDto);
+            var updated = await _service.UpdateAsync(id, employeeDto);
             if (!updated.IsSucess)
             {
                 return BadRequest(new ResultViewModel<EmployeeDetailedViewModel>(updated.Errors));

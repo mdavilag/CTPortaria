@@ -109,16 +109,16 @@ namespace CTPortaria.Services.Implementations
             }
         }
 
-        public async Task<ResultService<EmployeeServiceDTO>> UpdateAsync(EmployeeUpdateDTO employeeUpdateDto)
+        public async Task<ResultService<EmployeeServiceDTO>> UpdateAsync(int id, EmployeeUpdateDTO employeeUpdateDto)
         {
-            if (!await _repository.ExistsById(employeeUpdateDto.Id))
+            if (!await _repository.ExistsById(id))
             {
                 return new ResultService<EmployeeServiceDTO>("Usuário não localizado");
             }
 
             var inputEmployee = new EmployeeModel()
             {
-                Id = employeeUpdateDto.Id,
+                Id = id,
                 Name = employeeUpdateDto.Name,
                 Cpf = employeeUpdateDto.Cpf,
                 IsActive = employeeUpdateDto.IsActive,
