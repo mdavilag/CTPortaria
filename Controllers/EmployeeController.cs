@@ -135,6 +135,20 @@ namespace CTPortaria.Controllers
 
         #endregion
 
+        #region Deletes
 
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteById([FromRoute] int id)
+        {
+            var deleted = await _service.DeleteByIdAsync(id);
+            if (!deleted.Data || !deleted.IsSucess)
+            {
+                return NotFound(new ResultViewModel<bool>(deleted.Errors));
+            }
+
+            return NoContent();
+        }
+
+        #endregion
     }
 }
