@@ -49,6 +49,7 @@ namespace CTPortaria.Services.Implementations
                 var employeeDtos = employees
                     .Select(employee => new EmployeeServiceDTO()
                 {
+                    Id = employee.Id,
                     Name = employee.Name,
                     Cpf = employee.Cpf,
                     JobRole = employee.JobRole,
@@ -157,6 +158,7 @@ namespace CTPortaria.Services.Implementations
         {
             var employeeDto = new EmployeeServiceDTO()
             {
+                Id = employeeModel.Id,
                 Name = employeeModel.Name,
                 Cpf = employeeModel.Cpf,
                 JobRole = employeeModel.JobRole,

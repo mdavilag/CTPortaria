@@ -22,7 +22,7 @@ namespace CTPortaria.Repositories.Implementations
 
         public async Task<List<EmployeeModel>> GetAllAsync()
         {
-                return await _context.Employees.ToListAsync();
+                return await _context.Employees.AsNoTracking().ToListAsync();
         }
 
         public async Task<EmployeeModel> GetByIdAsync(int id)
