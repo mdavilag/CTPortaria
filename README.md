@@ -1,10 +1,10 @@
 🚧 Projeto em Desenvolvimento 🚧
 Este projeto está em fase de desenvolvimento e ainda não está pronto para uso em produção. O objetivo é criar uma solução completa para gestão de portarias, abrangendo: 
-
-✅ Registro de acessos de funcionários, visitantes e prestadores de serviço.
-✅ Controle de veículos.
-✅ Recebimento de entregas e mercadorias 📦.
-✅ Gestão de permissões e autenticação.
+    
+    ✅ Registro de acessos de funcionários, visitantes e prestadores de serviço.
+    ✅ Controle de veículos.
+    ✅ Recebimento de entregas e mercadorias 📦.
+    ✅ Gestão de permissões e autenticação.
 
 
 📌 Sobre o Projeto
@@ -32,10 +32,10 @@ A aplicação permitirá:
 
 Uma funcionalidade importante é o registro e controle de recebimento de entregas e mercadorias.
 
-✅ Registrar quando uma entrega chega na portaria.
-✅ Definir o destinatário da entrega.
-✅ Registrar a retirada do pacote.
-✅ Gerenciar entregas pendentes.
+    ✅ Registrar quando uma entrega chega na portaria.
+    ✅ Definir o destinatário da entrega.
+    ✅ Registrar a retirada do pacote.
+    ✅ Gerenciar entregas pendentes.
 
 🔜 Futuras melhorias incluem notificações automáticas ao destinatário quando uma entrega for recebida.
 📌 Contribuição
