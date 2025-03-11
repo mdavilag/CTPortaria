@@ -1,4 +1,5 @@
-﻿using CTPortaria.Entities;
+﻿using System.Xml.XPath;
+using CTPortaria.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,6 +16,9 @@ namespace CTPortaria.Mappings
                 .HasColumnType("int")
                 .IsRequired()
                 .ValueGeneratedOnAdd();
+            builder.HasIndex(x => x.Name)
+                .IsUnique()
+                .HasDatabaseName("IX_Employee_Name");
 
             builder.Property(x => x.Name)
                 .HasColumnName("Name")
