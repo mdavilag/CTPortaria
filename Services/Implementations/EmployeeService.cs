@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CTPortaria.DTOs;
 using CTPortaria.Entities;
+using CTPortaria.Exceptions;
 using CTPortaria.Repositories.Interfaces;
 using CTPortaria.Services.Interfaces;
 using CTPortaria.Services.Shared;
@@ -31,7 +32,8 @@ namespace CTPortaria.Services.Implementations
             var employee = await _repository.GetByNameAsync(name);
             if (employee == null)
             {
-                return new ResultService<EmployeeServiceDTO>("Erro ao localizar usuário");
+                throw new NotFoundException("Usuário não encontrado");
+                // return new ResultService<EmployeeServiceDTO>("Erro ao localizar usuário");
             }
                 // Mapear o model para o DTO
 

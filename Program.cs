@@ -1,4 +1,5 @@
 using CTPortaria.Data;
+using CTPortaria.Middlewares;
 using CTPortaria.Repositories.Implementations;
 using CTPortaria.Repositories.Interfaces;
 using CTPortaria.Services.Implementations;
@@ -30,6 +31,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
