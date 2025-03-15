@@ -17,7 +17,7 @@ namespace CTPortaria.Repositories.Implementations
 
         public async Task<EmployeeModel> GetByNameAsync(string name)
         {
-                return await _context.Employees.FirstOrDefaultAsync(x => x.Name == name);
+                return await _context.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.Name == name);
         }
 
         public async Task<List<EmployeeModel>> GetAllAsync()
@@ -27,7 +27,7 @@ namespace CTPortaria.Repositories.Implementations
 
         public async Task<EmployeeModel> GetByIdAsync(int id)
         {
-                return await _context.Employees.FirstOrDefaultAsync(x => x.Id == id);
+                return await _context.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<EmployeeModel> CreateAsync(EmployeeModel employeeToCreate)
@@ -69,11 +69,7 @@ namespace CTPortaria.Repositories.Implementations
 
         public async Task<bool> ExistsById(int id)
         {
-            if (await _context.Employees.AnyAsync(x => x.Id == id))
-            {
-                return true;
-            }
-            return false;
+            return await _context.Employees.AnyAsync(x => x.Id == id);
         }
     }
 }
