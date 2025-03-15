@@ -26,7 +26,8 @@ namespace CTPortaria.Services.Implementations
         {
             if (_validator.ValidateName(name) == false)
             {
-                return new ResultService<EmployeeServiceDTO>("Nome não é válido, digite o nome completo");
+                throw new ValidationException(new List<string>() { "Nome não é válido, digite o nome completo" });
+                //return new ResultService<EmployeeServiceDTO>("Nome não é válido, digite o nome completo");
             }
             
             var employee = await _repository.GetByNameAsync(name);
@@ -62,6 +63,7 @@ namespace CTPortaria.Services.Implementations
             }
             catch(Exception ex)
             {
+                
                 return new ResultService<List<EmployeeServiceDTO>>(ex.Message);
             }
         }

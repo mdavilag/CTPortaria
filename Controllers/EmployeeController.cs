@@ -93,7 +93,6 @@ namespace CTPortaria.Controllers
 
         #endregion
 
-
         #region Posts
 
         [HttpPost]
