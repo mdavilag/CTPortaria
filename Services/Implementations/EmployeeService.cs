@@ -63,8 +63,8 @@ namespace CTPortaria.Services.Implementations
             }
             catch(Exception ex)
             {
-                
-                return new ResultService<List<EmployeeServiceDTO>>(ex.Message);
+                throw new AppException("Erro ao buscar funcionários: " + ex.Message);
+                // return new ResultService<List<EmployeeServiceDTO>>(ex.Message);
             }
         }
 
@@ -73,7 +73,8 @@ namespace CTPortaria.Services.Implementations
             var employee = await _repository.GetByIdAsync(id);
             if (employee == null)
             {
-                return new ResultService<EmployeeServiceDTO>("Usuário não encontrado");
+                throw new NotFoundException("Usuário não encontrado");
+                //return new ResultService<EmployeeServiceDTO>("Usuário não encontrado");
             }
 
             var employeeDto = MapEmployeeToDto(employee);
@@ -83,20 +84,30 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<ResultService<EmployeeServiceDTO>> CreateAsync(EmployeeCreateDto employeeCreateDto)
         {
+            var validationErrors = new List<string>();
             // Validate Properties
             if (!_validator.ValidateName(employeeCreateDto.Name))
             {
-                return new ResultService<EmployeeServiceDTO>("Nome inválido");
+                validationErrors.Add("Nome inválido");
+                //return new ResultService<EmployeeServiceDTO>("Nome inválido");
             }
 
             if (!_validator.ValidateCpf(employeeCreateDto.Cpf.Trim().Replace(".", "").Replace("-", "")))
             {
-                return new ResultService<EmployeeServiceDTO>("Cpf inválido");
+                validationErrors.Add("Cpf inválido");
+
+                // return new ResultService<EmployeeServiceDTO>("Cpf inválido");
             }
 
             if (!_validator.ValidateJobRole(employeeCreateDto.JobRole))
             {
-                return new ResultService<EmployeeServiceDTO>("Cargo inválido");
+                validationErrors.Add("Cargo inválido");
+                // return new ResultService<EmployeeServiceDTO>("Cargo inválido");
+            }
+
+            if (validationErrors.Any())
+            {
+                throw new ValidationException(validationErrors);
             }
 
             // Map
@@ -109,7 +120,8 @@ namespace CTPortaria.Services.Implementations
             }
             catch (Exception ex)
             {
-                return new ResultService<EmployeeServiceDTO>("Erro ao criar");
+                throw new AppException("Erro ao criar usuário no banco de dados" + ex.Message);
+                // return new ResultService<EmployeeServiceDTO>("Erro ao criar");
             }
         }
 
@@ -117,6 +129,7 @@ namespace CTPortaria.Services.Implementations
         {
             if (!await _repository.ExistsById(id))
             {
+                throw new NotFoundException("Usuário não localizado");
                 return new ResultService<EmployeeServiceDTO>("Usuário não localizado");
             }
 
