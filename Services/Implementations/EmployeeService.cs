@@ -156,21 +156,20 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<ResultService<bool>> DeleteByIdAsync(int id)
         {
+            if (!await _repository.ExistsById(id))
+            {
+                    throw new NotFoundException("Usuário não encontrado");
+            }
+
             try
             {
-                if (!await _repository.ExistsById(id))
-                {
-                    throw new NotFoundException("Usuário não encontrado");
-                    return new ResultService<bool>("Usuário não encontrado");
-                }
-
                 await _repository.DeleteByIdAsync(id);
                 return new ResultService<bool>(true);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new AppException("Não foi possível excluir o usuário: " + ex.Message);
-                return new ResultService<bool>($"Não foi possivel excluir o usuario: {ex.Message}");
+                // return new ResultService<bool>($"Não foi possivel excluir o usuario: {ex.Message}");
             }
         }
 
