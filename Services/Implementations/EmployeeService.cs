@@ -130,7 +130,7 @@ namespace CTPortaria.Services.Implementations
             if (!await _repository.ExistsById(id))
             {
                 throw new NotFoundException("Usuário não localizado");
-                return new ResultService<EmployeeServiceDTO>("Usuário não localizado");
+                // return new ResultService<EmployeeServiceDTO>("Usuário não localizado");
             }
 
             var inputEmployee = new EmployeeModel()
@@ -149,7 +149,8 @@ namespace CTPortaria.Services.Implementations
             }
             catch (Exception ex)
             {
-                return new ResultService<EmployeeServiceDTO>($"Erro ao atualizar: {ex.Message}");
+                throw new AppException("Erro ao atualizar usuário: " + ex.Message);
+                // return new ResultService<EmployeeServiceDTO>($"Erro ao atualizar: {ex.Message}");
             }
         }
 
@@ -159,6 +160,7 @@ namespace CTPortaria.Services.Implementations
             {
                 if (!await _repository.ExistsById(id))
                 {
+                    throw new NotFoundException("Usuário não encontrado");
                     return new ResultService<bool>("Usuário não encontrado");
                 }
 
@@ -167,6 +169,7 @@ namespace CTPortaria.Services.Implementations
             }
             catch(Exception ex)
             {
+                throw new AppException("Não foi possível excluir o usuário: " + ex.Message);
                 return new ResultService<bool>($"Não foi possivel excluir o usuario: {ex.Message}");
             }
         }
