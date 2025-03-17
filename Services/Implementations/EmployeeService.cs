@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using CTPortaria.DTOs;
 using CTPortaria.Entities;
+using CTPortaria.Exceptions;
 using CTPortaria.Repositories.Interfaces;
 using CTPortaria.Services.Interfaces;
-using CTPortaria.Services.Shared;
 using CTPortaria.Utils.Validators;
 
 namespace CTPortaria.Services.Implementations
@@ -21,26 +21,28 @@ namespace CTPortaria.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<ResultService<EmployeeServiceDTO>> GetByNameAsync(string name)
+        public async Task<EmployeeServiceDTO> GetByNameAsync(string name)
         {
             if (_validator.ValidateName(name) == false)
             {
-                return new ResultService<EmployeeServiceDTO>("Nome não é válido, digite o nome completo");
+                throw new ValidationException(new List<string>() { "Nome não é válido, digite o nome completo" });
+                //return new ResultService<EmployeeServiceDTO>("Nome não é válido, digite o nome completo");
             }
             
             var employee = await _repository.GetByNameAsync(name);
             if (employee == null)
             {
-                return new ResultService<EmployeeServiceDTO>("Erro ao localizar usuário");
+                throw new NotFoundException("Usuário não encontrado");
+                // return new ResultService<EmployeeServiceDTO>("Erro ao localizar usuário");
             }
                 // Mapear o model para o DTO
 
             var employeeDto = MapEmployeeToDto(employee);
 
-            return new ResultService<EmployeeServiceDTO>(employeeDto);
+            return employeeDto;
         }
 
-        public async Task<ResultService<List<EmployeeServiceDTO>>> GetAllAsync()
+        public async Task<IList<EmployeeServiceDTO>> GetAllAsync()
         {
             try
             {
@@ -54,46 +56,65 @@ namespace CTPortaria.Services.Implementations
                     Cpf = employee.Cpf,
                     JobRole = employee.JobRole,
                     IsActive = employee.IsActive
-                });
+                }).ToList();
 
-                return new ResultService<List<EmployeeServiceDTO>>(employeeDtos.ToList());
+                return employeeDtos.ToList();
             }
             catch(Exception ex)
             {
-                return new ResultService<List<EmployeeServiceDTO>>(ex.Message);
+                throw new AppException("Erro ao buscar funcionários: " + ex.Message);
+                // return new ResultService<List<EmployeeServiceDTO>>(ex.Message);
             }
         }
 
-        public async Task<ResultService<EmployeeServiceDTO>> GetByIdAsync(int id)
+        public async Task<EmployeeServiceDTO> GetByIdAsync(int id)
         {
             var employee = await _repository.GetByIdAsync(id);
             if (employee == null)
             {
-                return new ResultService<EmployeeServiceDTO>("Usuário não encontrado");
+                throw new NotFoundException("Usuário não encontrado");
+                //return new ResultService<EmployeeServiceDTO>("Usuário não encontrado");
             }
 
             var employeeDto = MapEmployeeToDto(employee);
 
-            return new ResultService<EmployeeServiceDTO>(employeeDto);
+            return employeeDto;
+
         }
 
-        public async Task<ResultService<EmployeeServiceDTO>> CreateAsync(EmployeeCreateDto employeeCreateDto)
+        public async Task<EmployeeServiceDTO> CreateAsync(EmployeeCreateDto employeeCreateDto)
         {
+            var validationErrors = new List<string>();
             // Validate Properties
             if (!_validator.ValidateName(employeeCreateDto.Name))
             {
-                return new ResultService<EmployeeServiceDTO>("Nome inválido");
+                validationErrors.Add("Nome inválido");
+                //return new ResultService<EmployeeServiceDTO>("Nome inválido");
             }
 
             if (!_validator.ValidateCpf(employeeCreateDto.Cpf.Trim().Replace(".", "").Replace("-", "")))
             {
-                return new ResultService<EmployeeServiceDTO>("Cpf inválido");
+                validationErrors.Add("Cpf inválido");
+
+                // return new ResultService<EmployeeServiceDTO>("Cpf inválido");
             }
 
             if (!_validator.ValidateJobRole(employeeCreateDto.JobRole))
             {
-                return new ResultService<EmployeeServiceDTO>("Cargo inválido");
+                validationErrors.Add("Cargo inválido");
+                // return new ResultService<EmployeeServiceDTO>("Cargo inválido");
             }
+
+            // Validate if Cpf already exists
+            if (await _repository.ExistsByCpf(employeeCreateDto.Cpf))
+            {
+                validationErrors.Add("CPF já cadastrado");
+            }
+            if (validationErrors.Any())
+            {
+                throw new ValidationException(validationErrors);
+            }
+
 
             // Map
             var employeeToCreate = MapCreateDtoToEmployeeModel(employeeCreateDto);
@@ -101,19 +122,21 @@ namespace CTPortaria.Services.Implementations
             {
                 var result = await _repository.CreateAsync(employeeToCreate);
                 var resultDto = MapEmployeeToDto(result);
-                return new ResultService<EmployeeServiceDTO>(resultDto);
+                return resultDto;
             }
             catch (Exception ex)
             {
-                return new ResultService<EmployeeServiceDTO>("Erro ao criar");
+                throw new AppException("Erro ao criar usuário no banco de dados" + ex.Message);
+                // return new ResultService<EmployeeServiceDTO>("Erro ao criar");
             }
         }
 
-        public async Task<ResultService<EmployeeServiceDTO>> UpdateAsync(int id, EmployeeUpdateDTO employeeUpdateDto)
+        public async Task<EmployeeServiceDTO> UpdateAsync(int id, EmployeeUpdateDTO employeeUpdateDto)
         {
             if (!await _repository.ExistsById(id))
             {
-                return new ResultService<EmployeeServiceDTO>("Usuário não localizado");
+                throw new NotFoundException("Usuário não localizado");
+                // return new ResultService<EmployeeServiceDTO>("Usuário não localizado");
             }
 
             var inputEmployee = new EmployeeModel()
@@ -128,29 +151,31 @@ namespace CTPortaria.Services.Implementations
             {
                 var result = await _repository.UpdateAsync(inputEmployee);
                 var resultDto = MapEmployeeToDto(result);
-                return new ResultService<EmployeeServiceDTO>(resultDto);
+                return resultDto;
             }
             catch (Exception ex)
             {
-                return new ResultService<EmployeeServiceDTO>($"Erro ao atualizar: {ex.Message}");
+                throw new AppException("Erro ao atualizar usuário: " + ex.Message);
+                // return new ResultService<EmployeeServiceDTO>($"Erro ao atualizar: {ex.Message}");
             }
         }
 
-        public async Task<ResultService<bool>> DeleteByIdAsync(int id)
+        public async Task<bool> DeleteByIdAsync(int id)
         {
+            if (!await _repository.ExistsById(id))
+            {
+                    throw new NotFoundException("Usuário não encontrado");
+            }
+
             try
             {
-                if (!await _repository.ExistsById(id))
-                {
-                    return new ResultService<bool>("Usuário não encontrado");
-                }
-
                 await _repository.DeleteByIdAsync(id);
-                return new ResultService<bool>(true);
+                return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return new ResultService<bool>($"Não foi possivel excluir o usuario: {ex.Message}");
+                throw new AppException("Não foi possível excluir o usuário: " + ex.Message);
+                // return new ResultService<bool>($"Não foi possivel excluir o usuario: {ex.Message}");
             }
         }
 

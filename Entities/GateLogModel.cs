@@ -11,10 +11,7 @@ namespace CTPortaria.Entities
         public DateTime EnteredAt { get; set; }
         public DateTime? LeavedAt { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string RegisteredBy { get; set; }
 
-        public GateLogModel()
-        {
-            CreatedAt = DateTime.Now;
-        }
     }
 }
