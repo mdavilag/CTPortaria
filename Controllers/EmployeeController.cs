@@ -1,6 +1,7 @@
 ﻿using System.Runtime.Intrinsics;
 using AutoMapper;
 using CTPortaria.DTOs;
+using CTPortaria.Exceptions;
 using CTPortaria.Services.Implementations;
 using CTPortaria.Services.Interfaces;
 using CTPortaria.ViewModels;
@@ -28,11 +29,7 @@ namespace CTPortaria.Controllers
         public async Task<IActionResult> GetByName([FromQuery] string name)
         {
             var employee = await _service.GetByNameAsync(name);
-            if (!employee.IsSucess)
-            {
-                return NotFound(new ResultViewModel<EmployeeDetailedViewModel>(employee.Errors));
-            }
-
+            
             //var employeeViewModel = new EmployeeDetailedViewModel()
             //{
             //    Name = employee.Data.Name,
@@ -40,19 +37,15 @@ namespace CTPortaria.Controllers
             //    JobRole = employee.Data.JobRole,
             //    IsActive = employee.Data.IsActive
             //};
-            var employeeViewModel = _mapper.Map<EmployeeDetailedViewModel>(employee.Data);
+            var employeeViewModel = _mapper.Map<EmployeeDetailedViewModel>(employee);
 
-            return Ok(new ResultViewModel<EmployeeDetailedViewModel>(employeeViewModel));
+            return Ok(employeeViewModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var employeesResult = await _service.GetAllAsync();
-            if (!employeesResult.IsSucess)
-            {
-                return BadRequest(new ResultViewModel<EmployeeDetailedViewModel>(employeesResult.Errors));
-            }
 
             //var employeesViewModelList = employeesResult.Data.Select(x => new EmployeeDetailedViewModel()
             //{
@@ -62,20 +55,16 @@ namespace CTPortaria.Controllers
             //    IsActive = x.IsActive
             //}).ToList();
 
-            var employeesViewModel = _mapper.Map<List<EmployeeDetailedViewModel>>(employeesResult.Data);
+            var employeesViewModel = _mapper.Map<List<EmployeeDetailedViewModel>>(employeesResult);
 
-            var resultViewModel = new ResultViewModel<List<EmployeeDetailedViewModel>>(employeesViewModel);
-            return Ok(resultViewModel);
+            return Ok(employeesViewModel);
         }
 
         [HttpGet("id/{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
             var employee = await _service.GetByIdAsync(id);
-            if (!employee.IsSucess)
-            {
-                return BadRequest(new ResultViewModel<EmployeeDetailedViewModel>(employee.Errors));
-            }
+            
 
             //var employeeViewModel = new EmployeeDetailedViewModel()
             //{
@@ -85,14 +74,13 @@ namespace CTPortaria.Controllers
             //    IsActive = employee.Data.IsActive
             //};
 
-            var employeeViewModel = _mapper.Map<EmployeeDetailedViewModel>(employee.Data);
+            var employeeViewModel = _mapper.Map<EmployeeDetailedViewModel>(employee);
 
 
-            return Ok(new ResultViewModel<EmployeeDetailedViewModel>(employeeViewModel));
+            return Ok(employeeViewModel);
         }
 
         #endregion
-
 
         #region Posts
 
@@ -100,7 +88,7 @@ namespace CTPortaria.Controllers
         public async Task<IActionResult> Create([FromBody]EmployeeCreateDto employeeCreateDto)
         {
             var created =  await _service.CreateAsync(employeeCreateDto);
-            if (!created.IsSucess) return BadRequest(new ResultViewModel<EmployeeDetailedViewModel>(created.Errors));
+            
             //var createdViewModel = new EmployeeDetailedViewModel()
             //{
             //    Name = created.Data.Name,
@@ -109,10 +97,10 @@ namespace CTPortaria.Controllers
             //    IsActive = created.Data.IsActive
             //};
 
-            var createdViewModel = _mapper.Map<EmployeeDetailedViewModel>(created.Data);
+            var createdViewModel = _mapper.Map<EmployeeDetailedViewModel>(created);
 
             // Alterar a resposta de Ok para Created ou CreatedAtAction
-            return StatusCode(201, new ResultViewModel<EmployeeDetailedViewModel>(createdViewModel));
+            return StatusCode(201, createdViewModel);
         }
 
         #endregion
@@ -123,14 +111,11 @@ namespace CTPortaria.Controllers
         public async Task<IActionResult> Update([FromRoute]int id, [FromBody] EmployeeUpdateDTO employeeDto)
         {
             var updated = await _service.UpdateAsync(id, employeeDto);
-            if (!updated.IsSucess)
-            {
-                return BadRequest(new ResultViewModel<EmployeeDetailedViewModel>(updated.Errors));
-            }
+            
 
-            var updatedViewModel = _mapper.Map<EmployeeDetailedViewModel>(updated.Data);
+            var updatedViewModel = _mapper.Map<EmployeeDetailedViewModel>(updated);
 
-            return Ok(new ResultViewModel<EmployeeDetailedViewModel>(updatedViewModel));
+            return Ok(updatedViewModel);
         }
 
         #endregion
@@ -141,10 +126,6 @@ namespace CTPortaria.Controllers
         public async Task<IActionResult> DeleteById([FromRoute] int id)
         {
             var deleted = await _service.DeleteByIdAsync(id);
-            if (!deleted.Data || !deleted.IsSucess)
-            {
-                return NotFound(new ResultViewModel<bool>(deleted.Errors));
-            }
 
             return NoContent();
         }

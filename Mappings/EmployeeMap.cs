@@ -30,6 +30,9 @@ namespace CTPortaria.Mappings
                 .HasColumnName("Cpf")
                 .HasColumnType("VARCHAR(11)")
                 .HasMaxLength(11);
+            builder.HasIndex(x => x.Cpf)
+                .IsUnique();
+
             builder.Property(x => x.JobRole)
                 .HasColumnName("JobRole")
                 .HasColumnType("VARCHAR(40)")
