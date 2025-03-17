@@ -4,7 +4,6 @@ using CTPortaria.Entities;
 using CTPortaria.Exceptions;
 using CTPortaria.Repositories.Interfaces;
 using CTPortaria.Services.Interfaces;
-using CTPortaria.Services.Shared;
 using CTPortaria.Utils.Validators;
 
 namespace CTPortaria.Services.Implementations
@@ -22,7 +21,7 @@ namespace CTPortaria.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<ResultService<EmployeeServiceDTO>> GetByNameAsync(string name)
+        public async Task<EmployeeServiceDTO> GetByNameAsync(string name)
         {
             if (_validator.ValidateName(name) == false)
             {
@@ -40,10 +39,10 @@ namespace CTPortaria.Services.Implementations
 
             var employeeDto = MapEmployeeToDto(employee);
 
-            return new ResultService<EmployeeServiceDTO>(employeeDto);
+            return employeeDto;
         }
 
-        public async Task<ResultService<List<EmployeeServiceDTO>>> GetAllAsync()
+        public async Task<IList<EmployeeServiceDTO>> GetAllAsync()
         {
             try
             {
@@ -57,9 +56,9 @@ namespace CTPortaria.Services.Implementations
                     Cpf = employee.Cpf,
                     JobRole = employee.JobRole,
                     IsActive = employee.IsActive
-                });
+                }).ToList();
 
-                return new ResultService<List<EmployeeServiceDTO>>(employeeDtos.ToList());
+                return employeeDtos.ToList();
             }
             catch(Exception ex)
             {
@@ -68,7 +67,7 @@ namespace CTPortaria.Services.Implementations
             }
         }
 
-        public async Task<ResultService<EmployeeServiceDTO>> GetByIdAsync(int id)
+        public async Task<EmployeeServiceDTO> GetByIdAsync(int id)
         {
             var employee = await _repository.GetByIdAsync(id);
             if (employee == null)
@@ -79,10 +78,11 @@ namespace CTPortaria.Services.Implementations
 
             var employeeDto = MapEmployeeToDto(employee);
 
-            return new ResultService<EmployeeServiceDTO>(employeeDto);
+            return employeeDto;
+
         }
 
-        public async Task<ResultService<EmployeeServiceDTO>> CreateAsync(EmployeeCreateDto employeeCreateDto)
+        public async Task<EmployeeServiceDTO> CreateAsync(EmployeeCreateDto employeeCreateDto)
         {
             var validationErrors = new List<string>();
             // Validate Properties
@@ -116,7 +116,7 @@ namespace CTPortaria.Services.Implementations
             {
                 var result = await _repository.CreateAsync(employeeToCreate);
                 var resultDto = MapEmployeeToDto(result);
-                return new ResultService<EmployeeServiceDTO>(resultDto);
+                return resultDto;
             }
             catch (Exception ex)
             {
@@ -125,7 +125,7 @@ namespace CTPortaria.Services.Implementations
             }
         }
 
-        public async Task<ResultService<EmployeeServiceDTO>> UpdateAsync(int id, EmployeeUpdateDTO employeeUpdateDto)
+        public async Task<EmployeeServiceDTO> UpdateAsync(int id, EmployeeUpdateDTO employeeUpdateDto)
         {
             if (!await _repository.ExistsById(id))
             {
@@ -145,7 +145,7 @@ namespace CTPortaria.Services.Implementations
             {
                 var result = await _repository.UpdateAsync(inputEmployee);
                 var resultDto = MapEmployeeToDto(result);
-                return new ResultService<EmployeeServiceDTO>(resultDto);
+                return resultDto;
             }
             catch (Exception ex)
             {
@@ -154,7 +154,7 @@ namespace CTPortaria.Services.Implementations
             }
         }
 
-        public async Task<ResultService<bool>> DeleteByIdAsync(int id)
+        public async Task<bool> DeleteByIdAsync(int id)
         {
             if (!await _repository.ExistsById(id))
             {
@@ -164,7 +164,7 @@ namespace CTPortaria.Services.Implementations
             try
             {
                 await _repository.DeleteByIdAsync(id);
-                return new ResultService<bool>(true);
+                return true;
             }
             catch (Exception ex)
             {
