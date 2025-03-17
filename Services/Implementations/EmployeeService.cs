@@ -105,10 +105,16 @@ namespace CTPortaria.Services.Implementations
                 // return new ResultService<EmployeeServiceDTO>("Cargo inválido");
             }
 
+            if (await _repository.ExistsByCpf(employeeCreateDto.Cpf))
+            {
+                validationErrors.Add("CPF já cadastrado");
+            }
             if (validationErrors.Any())
             {
                 throw new ValidationException(validationErrors);
             }
+            // Validate if Cpf already exists
+
 
             // Map
             var employeeToCreate = MapCreateDtoToEmployeeModel(employeeCreateDto);

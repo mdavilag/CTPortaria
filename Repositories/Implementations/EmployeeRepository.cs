@@ -71,5 +71,10 @@ namespace CTPortaria.Repositories.Implementations
         {
             return await _context.Employees.AnyAsync(x => x.Id == id);
         }
+
+        public async Task<bool> ExistsByCpf(string cpf)
+        {
+            return await _context.Employees.AsNoTracking().AnyAsync(x => x.Cpf == cpf);
+        }
     }
 }

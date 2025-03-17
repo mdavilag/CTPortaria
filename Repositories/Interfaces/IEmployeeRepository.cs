@@ -12,5 +12,6 @@ namespace CTPortaria.Repositories.Interfaces
         Task<EmployeeModel> UpdateAsync(EmployeeModel employeeToUpdate);
         Task<bool> DeleteByIdAsync(int id);
         Task<bool> ExistsById(int id);
+        Task<bool> ExistsByCpf(string cpf);
     }
 }
