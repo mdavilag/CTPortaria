@@ -36,7 +36,10 @@ namespace CTPortaria.Mappings
                 .HasColumnName("CreatedAt")
                 .HasColumnType("Datetime")
                 .IsRequired();
-
+            builder.Property(x => x.RegisteredBy)
+                .HasColumnName("RegisteredBy")
+                .HasColumnType("VARCHAR(80)")
+                .IsRequired();
             builder.HasOne(x => x.Employee)
                 .WithMany(x => x.GateLogs)
                 .HasForeignKey(x => x.EmployeeId)
