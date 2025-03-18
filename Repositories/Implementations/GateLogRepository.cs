@@ -44,7 +44,11 @@ namespace CTPortaria.Repositories.Implementations
 
         public async Task<List<GateLogModel>> GetByDateTimeAsync(DateTime initDate, DateTime endDate)
         {
-            throw new NotImplementedException();
+            return await _context.GateLogs
+                .AsNoTracking()
+                .Where(x => x.EnteredAt >= initDate && x.EnteredAt <= endDate)
+                .Include(x => x.Employee)
+                .ToListAsync();
         }
 
         public async Task<List<GateLogModel>> GetByEmployeeAsync(EmployeeModel employee)
