@@ -30,12 +30,16 @@ namespace CTPortaria.Repositories.Implementations
 
         public async Task<GateLogModel> GetByIdAsync(int id)
         {
-            return await _context.GateLogs.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.GateLogs.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<GateLogModel>> GetByDayAsync(DateTime date)
         {
-            throw new NotImplementedException();
+            return await _context.GateLogs
+                .AsNoTracking()
+                .Where(x=>x.EnteredAt.Date == date.Date)
+                .Include(x=>x.Employee)
+                .ToListAsync();
         }
 
         public async Task<List<GateLogModel>> GetByDateTimeAsync(DateTime initDate, DateTime endDate)
