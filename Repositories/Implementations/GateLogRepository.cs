@@ -22,6 +22,7 @@ namespace CTPortaria.Repositories.Implementations
         public async Task<List<GateLogModel>> GetAllInsideAsync()
         {
             return await _context.GateLogs
+                .AsNoTracking()
                 .Where(x => x.LeavedAt == null)
                 .Include(x=>x.Employee)
                 .ToListAsync();
@@ -29,7 +30,7 @@ namespace CTPortaria.Repositories.Implementations
 
         public async Task<GateLogModel> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.GateLogs.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<GateLogModel>> GetByDayAsync(DateTime date)
