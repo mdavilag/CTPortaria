@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CTPortaria.Mappings
+namespace CTPortaria.Data.Mappings
 {
     public class GateLogMap : IEntityTypeConfiguration<GateLogModel>
     {
