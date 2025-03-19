@@ -85,7 +85,7 @@ namespace CTPortaria.Repositories.Implementations
             return await GetByIdAsync(gateLogToUpdate.Id);
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteByIdAsync(int id)
         {
             var userToDelete = await GetByIdAsync(id);
             if (userToDelete == null)

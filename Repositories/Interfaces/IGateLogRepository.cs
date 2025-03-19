@@ -20,7 +20,7 @@ namespace CTPortaria.Repositories.Interfaces
 
         // Delete
 
-        Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteByIdAsync(int id);
 
     }
 }

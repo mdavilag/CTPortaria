@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CTPortaria.Mappings
+namespace CTPortaria.Data.Mappings
 {
     public class VehicleMap : IEntityTypeConfiguration<VehicleModel>
     {

@@ -3,7 +3,7 @@ using CTPortaria.DTOs;
 using CTPortaria.Entities;
 using CTPortaria.ViewModels;
 
-namespace CTPortaria.AutoMapper
+namespace CTPortaria.Profiles
 {
     public class EmployeeProfile : Profile
     {
