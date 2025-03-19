@@ -9,12 +9,18 @@ namespace CTPortaria.Repositories.Interfaces
         Task<GateLogModel> GetByIdAsync(int id);
         Task<List<GateLogModel>> GetByDayAsync(DateTime date);
         Task<List<GateLogModel>> GetByDateTimeAsync(DateTime initDate, DateTime endDate);
-        Task<List<GateLogModel>> GetByEmployeeAsync(EmployeeModel employee);
-        Task<List<GateLogModel>> GetByVisitorIdentity(string visitorName);
+        Task<List<GateLogModel>> GetByEmployeeAsync(int id);
+        Task<List<GateLogModel>> GetByVisitorIdentity(string visitorIdentity);
 
         // Create
+        Task<GateLogModel> CreateAsync(GateLogModel gateLogToCreate);
+
         // Update
+        Task<GateLogModel> UpdateAsync(GateLogModel gateLogToUpdate);
+
         // Delete
-        
+
+        Task<bool> DeleteAsync(int id);
+
     }
 }
