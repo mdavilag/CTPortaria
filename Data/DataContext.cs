@@ -1,5 +1,5 @@
-﻿using CTPortaria.Entities;
-using CTPortaria.Mappings;
+﻿using CTPortaria.Data.Mappings;
+using CTPortaria.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CTPortaria.Data
