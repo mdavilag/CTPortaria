@@ -32,6 +32,11 @@ namespace CTPortaria.Data.Mappings
                 .HasColumnName("RegisteredBy")
                 .HasColumnType("VARCHAR(80)")
                 .IsRequired();
+            builder.Property(x => x.Description)
+                .HasColumnName("Description")
+                .HasColumnType("TEXT")
+                .HasMaxLength(300);
+
             builder.HasOne(x => x.Employee)
                 .WithMany(x => x.GateLogs)
                 .HasForeignKey(x => x.EmployeeId)
