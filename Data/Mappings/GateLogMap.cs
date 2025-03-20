@@ -16,14 +16,6 @@ namespace CTPortaria.Data.Mappings
                 .HasColumnType("int")
                 .IsRequired()
                 .ValueGeneratedOnAdd();
-            builder.Property(x => x.VisitorName)
-                .HasColumnName("VisitorName")
-                .HasColumnType("VARCHAR(80)")
-                .HasMaxLength(80);
-            builder.Property(x => x.VisitorIdentity)
-                .HasColumnName("VisitorIdentity")
-                .HasColumnType("VARCHAR(20)")
-                .HasMaxLength(20);
             builder.Property(x => x.EnteredAt)
                 .HasColumnName("EnteredAt")
                 .HasColumnType("Datetime")
@@ -44,6 +36,10 @@ namespace CTPortaria.Data.Mappings
                 .WithMany(x => x.GateLogs)
                 .HasForeignKey(x => x.EmployeeId)
                 .HasConstraintName("FK_GateLogs_EmployeeId");
+            builder.HasOne(x => x.Visitor)
+                .WithMany(x => x.GateLogs)
+                .HasForeignKey(x => x.VisitorId)
+                .HasConstraintName("FK_Gatelogs_VisitorId");
         }
     }
 }
