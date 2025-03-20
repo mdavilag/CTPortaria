@@ -66,7 +66,7 @@ namespace CTPortaria.Repositories.Implementations
         {
             return await _context.GateLogs
                 .AsNoTracking()
-                .Where(x => x.VisitorIdentity == visitorIdentity)
+                .Where(x => x.Visitor.Cpf == visitorIdentity)
                 .ToListAsync();
         }
 
