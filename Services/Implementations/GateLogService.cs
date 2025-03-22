@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CTPortaria.Data;
 using CTPortaria.DTOs;
+using CTPortaria.Entities;
 using CTPortaria.Enums;
 using CTPortaria.Exceptions;
 using CTPortaria.Repositories.Interfaces;
@@ -43,7 +44,7 @@ namespace CTPortaria.Services.Implementations
             }
             catch (Exception ex)
             {
-                throw new AppException("Erro ao buscar registros: " + ex.Message);
+                throw new AppException("Erro ao buscar registros no Banco de dados: " + ex.Message);
             }
             
         }
@@ -86,6 +87,24 @@ namespace CTPortaria.Services.Implementations
         public async Task<bool> DeleteByIdAsync(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public List<GateLogServiceDTO> MapGateLogToGateLogServiceDto(List<GateLogModel> gateLogs)
+        {
+            var gateLogDtos = gateLogs
+                .Select(gateLog => new GateLogServiceDTO()
+                {
+                    Id = gateLog.Id,
+                    Name = gateLog.Employee != null ? gateLog.Employee.Name : gateLog.Visitor.Name,
+                    PersonType = gateLog.Employee != null ? EPersonType.Employee : EPersonType.Visitor,
+                    Cpf = gateLog.Employee != null ? gateLog.Employee.Cpf : gateLog.Visitor.Cpf,
+                    Description = gateLog.Description,
+                    EnteredAt = gateLog.EnteredAt,
+                    LeavedAt = gateLog.LeavedAt,
+                    RegisteredBy = gateLog.RegisteredBy
+                }).ToList();
+
+            return gateLogDtos;
         }
     }
 }
