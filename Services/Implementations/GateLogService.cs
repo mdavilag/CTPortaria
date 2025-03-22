@@ -51,7 +51,16 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<List<GateLogServiceDTO>> GetallInsideAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var gateLogs = await _repository.GetAllInsideAsync();
+
+                return MapGateLogToGateLogServiceDto(gateLogs);
+            }
+            catch (Exception ex)
+            {
+                throw new AppException("Erro ao buscar registros no Banco de dados " + ex.Message);
+            }
         }
 
         public async Task<GateLogServiceDTO> GetByIdAsync(int id)
