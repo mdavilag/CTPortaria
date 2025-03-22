@@ -49,7 +49,7 @@ namespace CTPortaria.Services.Implementations
             
         }
 
-        public async Task<List<GateLogServiceDTO>> GetallInsideAsync()
+        public async Task<List<GateLogServiceDTO>> GetAllInsideAsync()
         {
             try
             {
