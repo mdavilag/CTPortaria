@@ -65,12 +65,48 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<GateLogServiceDTO> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id < 0)
+            {
+                throw new ValidationException(new List<string>() { "Id inválido" });
+            }
+
+            try
+            {
+                var gateLog = await _repository.GetByIdAsync(id);
+                if (gateLog == null)
+                {
+                    throw new NotFoundException("Usuário não localizado");
+                }
+
+                return MapGateLogToGateLogServiceDto(gateLog);
+
+            }
+            catch (NotFoundException ex)
+            {
+                throw new NotFoundException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new AppException("Erro ao localizar usuário: " + ex.Message);
+            }
         }
 
         public async Task<List<GateLogServiceDTO>> GetByDayAsync(DateTime date)
         {
-            throw new NotImplementedException();
+            if (date == null)
+            {
+                throw new ValidationException(new List<string>() { "Data de pesquisa inválida" });
+            }
+
+            try
+            {
+                var gateLogs = await _repository.GetByDayAsync(date);
+                return MapGateLogToGateLogServiceDto(gateLogs);
+            }
+            catch (Exception ex)
+            {
+                throw new AppException("Erro ao localizar registros: " + ex.Message);
+            }
         }
 
         public async Task<List<GateLogServiceDTO>> GetByDateTimeAsync(DateTime initDate, DateTime endDate)
@@ -114,6 +150,22 @@ namespace CTPortaria.Services.Implementations
                 }).ToList();
 
             return gateLogDtos;
+        }
+
+        public GateLogServiceDTO MapGateLogToGateLogServiceDto(GateLogModel gateLog)
+        {
+            var gateLogDto = new GateLogServiceDTO()
+            {
+                Id = gateLog.Id,
+                Name = gateLog.Employee != null ? gateLog.Employee.Name : gateLog.Visitor.Name,
+                PersonType = gateLog.Employee != null ? EPersonType.Employee : EPersonType.Visitor,
+                Cpf = gateLog.Employee != null ? gateLog.Employee.Cpf : gateLog.Visitor.Cpf,
+                Description = gateLog.Description,
+                EnteredAt = gateLog.EnteredAt,
+                LeavedAt = gateLog.LeavedAt,
+                RegisteredBy = gateLog.RegisteredBy
+            };
+            return gateLogDto;
         }
     }
 }
