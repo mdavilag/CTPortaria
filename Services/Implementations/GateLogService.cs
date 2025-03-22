@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using CTPortaria.Data;
 using CTPortaria.DTOs;
+using CTPortaria.Enums;
+using CTPortaria.Exceptions;
 using CTPortaria.Repositories.Interfaces;
 using CTPortaria.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +21,31 @@ namespace CTPortaria.Services.Implementations
         }
         public async Task<List<GateLogServiceDTO>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var gateLogs = await _repository.GetAllAsync();
+
+                var gateLogDtos = gateLogs
+                    .Select(gateLog => new GateLogServiceDTO()
+                    {
+                        Id = gateLog.Id,
+                        Name = gateLog.Employee != null ? gateLog.Employee.Name : gateLog.Visitor.Name,
+                        PersonType = gateLog.Employee != null ? EPersonType.Employee : EPersonType.Visitor,
+                        Cpf = gateLog.Employee != null ? gateLog.Employee.Cpf : gateLog.Visitor.Cpf,
+                        Description = gateLog.Description,
+                        EnteredAt = gateLog.EnteredAt,
+                        LeavedAt = gateLog.LeavedAt,
+                        RegisteredBy = gateLog.RegisteredBy
+                    }).ToList();
+
+                return gateLogDtos;
+
+            }
+            catch (Exception ex)
+            {
+                throw new AppException("Erro ao buscar registros: " + ex.Message);
+            }
+            
         }
 
         public async Task<List<GateLogServiceDTO>> GetallInsideAsync()
