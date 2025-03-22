@@ -19,8 +19,11 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<DataContext>();
+// Dependency Injections
 builder.Services.AddScoped<IEmployeeRepository,EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IGateLogRepository, GateLogRepository>();
+builder.Services.AddScoped<IGateLogService, GateLogService>();
 builder.Services.AddTransient<IEmployeeValidator, EmployeeValidator>();
 
 var app = builder.Build();
