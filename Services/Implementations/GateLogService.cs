@@ -144,7 +144,25 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<List<GateLogServiceDTO>> GetByVisitorCpfAsync(string visitorCpf)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(visitorCpf))
+            {
+                throw new AppException("Cpf inválido");
+            }
+
+            if (visitorCpf.Replace(".", "").Replace("-", "").Length != 11)
+            {
+                throw new ValidationException("Cpf inválido");
+            }
+
+            try
+            {
+                var gateLogs = await _repository.GetByVisitorCpfAsync(visitorCpf);
+                return MapGateLogToGateLogServiceDto(gateLogs);
+            }
+            catch (Exception ex)
+            {
+                throw new AppException("Erro ao localizar registros " + ex.Message);
+            }
         }
 
         public async Task<GateLogServiceDTO> RegisterExitAsync(int gateLogId)
