@@ -186,7 +186,13 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<bool> DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var gateLogToDelete = await _repository.GetByIdAsync(id);
+            if (gateLogToDelete == null)
+            {
+                throw new NotFoundException("Registro não encontrado");
+            }
+
+            return await _repository.DeleteByIdAsync(id);
         }
 
         public List<GateLogServiceDTO> MapGateLogToGateLogServiceDto(List<GateLogModel> gateLogs)
