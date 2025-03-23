@@ -125,13 +125,21 @@ namespace CTPortaria.Services.Implementations
             {
                 throw new AppException("Erro ao localizar registros");
             }
-            
-
         }
 
         public async Task<List<GateLogServiceDTO>> GetByEmployeeAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id < 0) throw new ValidationException("Id inválido");
+
+            try
+            {
+                var gateLogs = await _repository.GetByEmployeeAsync(id);
+                return MapGateLogToGateLogServiceDto(gateLogs);
+            }
+            catch (Exception ex)
+            {
+                throw new AppException("Erro ao localizar registros " + ex.Message);
+            }
         }
 
         public async Task<List<GateLogServiceDTO>> GetByVisitorCpfAsync(string visitorCpf)
