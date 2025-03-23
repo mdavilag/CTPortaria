@@ -63,5 +63,11 @@ namespace CTPortaria.Controllers
             return Ok(await _service.RegisterExitAsync(id));
         }
 
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteByIdAsync([FromRoute] int id)
+        {
+            return Ok(await _service.DeleteByIdAsync(id));
+        }
+
     }
 }
