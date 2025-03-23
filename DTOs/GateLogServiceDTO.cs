@@ -9,7 +9,7 @@ namespace CTPortaria.DTOs
         public string Name { get; set; } // Employee or Visitor name
         public string Cpf { get; set; } // Employee Or Visitor CPF
 
-        public EPersonType PersonType { get; set; }
+        public string PersonType { get; set; }
 
         public DateTime EnteredAt { get; set; }
         public DateTime? LeavedAt { get; set; }

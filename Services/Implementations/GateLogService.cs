@@ -31,7 +31,7 @@ namespace CTPortaria.Services.Implementations
                     {
                         Id = gateLog.Id,
                         Name = gateLog.Employee != null ? gateLog.Employee.Name : gateLog.Visitor.Name,
-                        PersonType = gateLog.Employee != null ? EPersonType.Employee : EPersonType.Visitor,
+                        PersonType = gateLog.Employee != null ? EPersonType.Employee.ToString() : EPersonType.Visitor.ToString(),
                         Cpf = gateLog.Employee != null ? gateLog.Employee.Cpf : gateLog.Visitor.Cpf,
                         Description = gateLog.Description,
                         EnteredAt = gateLog.EnteredAt,
@@ -202,7 +202,7 @@ namespace CTPortaria.Services.Implementations
                 {
                     Id = gateLog.Id,
                     Name = gateLog.Employee != null ? gateLog.Employee.Name : gateLog.Visitor.Name,
-                    PersonType = gateLog.Employee != null ? EPersonType.Employee : EPersonType.Visitor,
+                    PersonType = gateLog.Employee != null ? EPersonType.Employee.ToString() : EPersonType.Visitor.ToString(),
                     Cpf = gateLog.Employee != null ? gateLog.Employee.Cpf : gateLog.Visitor.Cpf,
                     Description = gateLog.Description,
                     EnteredAt = gateLog.EnteredAt,
@@ -219,7 +219,7 @@ namespace CTPortaria.Services.Implementations
             {
                 Id = gateLog.Id,
                 Name = gateLog.Employee != null ? gateLog.Employee.Name : gateLog.Visitor.Name,
-                PersonType = gateLog.Employee != null ? EPersonType.Employee : EPersonType.Visitor,
+                PersonType = gateLog.Employee != null ? EPersonType.Employee.ToString() : EPersonType.Visitor.ToString(),
                 Cpf = gateLog.Employee != null ? gateLog.Employee.Cpf : gateLog.Visitor.Cpf,
                 Description = gateLog.Description,
                 EnteredAt = gateLog.EnteredAt,
