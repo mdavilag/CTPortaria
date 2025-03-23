@@ -40,5 +40,12 @@ namespace CTPortaria.Controllers
             return Ok(await _service.GetByDayAsync(date));
         }
 
+        [HttpGet("datetime/")]
+        public async Task<IActionResult> GetByDateTime([FromQuery] DateTime initDate, DateTime endDate)
+        {
+            return Ok(await _service.GetByDateTimeAsync(initDate, endDate));
+        }
+        
+
     }
 }
