@@ -111,7 +111,22 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<List<GateLogServiceDTO>> GetByDateTimeAsync(DateTime initDate, DateTime endDate)
         {
-            throw new NotImplementedException();
+            if (initDate == default || endDate == default)
+            {
+                throw new ValidationException("Data de pesquisa inválida");
+            }
+
+            try
+            {
+                var gateLogs = await _repository.GetByDateTimeAsync(initDate, endDate);
+                return MapGateLogToGateLogServiceDto(gateLogs);
+            }
+            catch
+            {
+                throw new AppException("Erro ao localizar registros");
+            }
+            
+
         }
 
         public async Task<List<GateLogServiceDTO>> GetByEmployeeAsync(int id)
