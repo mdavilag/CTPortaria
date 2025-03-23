@@ -167,7 +167,21 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<GateLogServiceDTO> RegisterExitAsync(int gateLogId)
         {
-            throw new NotImplementedException();
+            var gateLog = await _repository.GetByIdAsync(gateLogId);
+            if (gateLog == null)
+            {
+                throw new NotFoundException("Registro não encontrado");
+            }
+
+            if (gateLog.LeavedAt != null)
+            {
+                throw new NotFoundException("Registro já contém uma data de saída");
+            }
+
+            gateLog.LeavedAt = DateTime.Now;
+            var updatedGateLog = await _repository.UpdateAsync(gateLog);
+
+            return MapGateLogToGateLogServiceDto(updatedGateLog);
         }
 
         public async Task<bool> DeleteByIdAsync(int id)
