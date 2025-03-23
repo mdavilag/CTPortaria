@@ -45,7 +45,17 @@ namespace CTPortaria.Controllers
         {
             return Ok(await _service.GetByDateTimeAsync(initDate, endDate));
         }
-        
+
+        [HttpGet("employeeId/{id:int}")]
+        public async Task<IActionResult> GetByEmployeeAsync([FromRoute]int id)
+        {
+            return Ok(await _service.GetByEmployeeAsync(id));
+        }
+        [HttpGet("visitorCpf/{cpf}")]
+        public async Task<IActionResult> GetByVisitorAsync([FromRoute] string cpf)
+        {
+            return Ok(await _service.GetByVisitorCpfAsync(cpf));
+        }
 
     }
 }
