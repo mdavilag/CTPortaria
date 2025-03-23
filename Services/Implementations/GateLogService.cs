@@ -62,7 +62,7 @@ namespace CTPortaria.Services.Implementations
                 var gateLog = await _repository.GetByIdAsync(id);
                 if (gateLog == null)
                 {
-                    throw new NotFoundException("Usuário não localizado");
+                    throw new NotFoundException("Registro não localizado");
                 }
 
                 return MapGateLogToGateLogServiceDto(gateLog);

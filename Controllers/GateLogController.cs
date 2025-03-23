@@ -22,5 +22,17 @@ namespace CTPortaria.Controllers
         {
             return Ok(await _service.GetAllAsync());
         }
+
+        [HttpGet("inside")]
+        public async Task<IActionResult> GetAllInsideAsync()
+        {
+            return Ok(await _service.GetAllInsideAsync());
+        }
+        [HttpGet("id/{id:int}")]
+        public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
+        {
+            return Ok(await _service.GetByIdAsync(id));
+        }
+
     }
 }
