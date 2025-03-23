@@ -57,5 +57,11 @@ namespace CTPortaria.Controllers
             return Ok(await _service.GetByVisitorCpfAsync(cpf));
         }
 
+        [HttpPut("exit/{id:int}")]
+        public async Task<IActionResult> RegisterExitAsync([FromRoute] int id)
+        {
+            return Ok(await _service.RegisterExitAsync(id));
+        }
+
     }
 }

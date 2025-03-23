@@ -162,7 +162,7 @@ namespace CTPortaria.Services.Implementations
 
             if (gateLog.LeavedAt != null)
             {
-                throw new NotFoundException("Registro já contém uma data de saída");
+                throw new ValidationException("Registro já contém uma data de saída");
             }
 
             gateLog.LeavedAt = DateTime.Now;
