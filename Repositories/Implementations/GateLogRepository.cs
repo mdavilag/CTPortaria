@@ -18,7 +18,11 @@ namespace CTPortaria.Repositories.Implementations
 
         public async Task<List<GateLogModel>> GetAllAsync()
         {
-            return await _context.GateLogs.ToListAsync();
+            return await _context.GateLogs
+                .Include(x=>x.Employee)
+                .Include(x=>x.Visitor)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<List<GateLogModel>> GetAllInsideAsync()
@@ -27,12 +31,17 @@ namespace CTPortaria.Repositories.Implementations
                 .AsNoTracking()
                 .Where(x => x.LeavedAt == null)
                 .Include(x=>x.Employee)
+                .Include(x=>x.Visitor)
+                .AsNoTracking()
                 .ToListAsync();
         }
 
         public async Task<GateLogModel> GetByIdAsync(int id)
         {
-            return await _context.GateLogs.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.GateLogs
+                .Include(x=>x.Employee)
+                .Include(x => x.Visitor)
+                .AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<GateLogModel>> GetByDayAsync(DateTime date)
@@ -41,6 +50,7 @@ namespace CTPortaria.Repositories.Implementations
                 .AsNoTracking()
                 .Where(x=>x.EnteredAt.Date == date.Date)
                 .Include(x=>x.Employee)
+                .Include(x => x.Visitor)
                 .ToListAsync();
         }
 
@@ -50,6 +60,7 @@ namespace CTPortaria.Repositories.Implementations
                 .AsNoTracking()
                 .Where(x => x.EnteredAt >= initDate && x.EnteredAt <= endDate)
                 .Include(x => x.Employee)
+                .Include(x => x.Visitor)
                 .ToListAsync();
         }
 
@@ -59,6 +70,7 @@ namespace CTPortaria.Repositories.Implementations
                 .AsNoTracking()
                 .Where(x => x.EmployeeId == id)
                 .Include(x => x.Employee)
+                .Include(x => x.Visitor)
                 .ToListAsync();
         }
 
@@ -66,6 +78,7 @@ namespace CTPortaria.Repositories.Implementations
         {
             return await _context.GateLogs
                 .AsNoTracking()
+                .Include(x => x.Visitor)
                 .Where(x => x.Visitor.Cpf == visitorCpf)
                 .ToListAsync();
         }
