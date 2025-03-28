@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CTPortaria.DTOs;
 using CTPortaria.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,11 +47,11 @@ namespace CTPortaria.Controllers
             return Ok(await _service.GetByDateTimeAsync(initDate, endDate));
         }
 
-        //[HttpGet("search")]
-        //public async Task<IActionResult> SearchQueryAsync([FromQuery]DateTime initDate, [FromQuery]DateTime endDate, [FromQuery]string cpf, [FromQuery]string name)
-        //{
-
-        //};
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchQueryAsync([FromQuery] GateLogSearchDTO gateLog)
+        {
+            return Ok(await _service.SearchQueryAsync(gateLog));
+        }
 
         [HttpGet("employeeId/{id:int}")]
         public async Task<IActionResult> GetByEmployeeAsync([FromRoute]int id)

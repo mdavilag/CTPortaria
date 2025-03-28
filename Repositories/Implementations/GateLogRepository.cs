@@ -1,5 +1,7 @@
 ﻿using CTPortaria.Data;
+using CTPortaria.DTOs;
 using CTPortaria.Entities;
+using CTPortaria.Enums;
 using CTPortaria.Exceptions;
 using CTPortaria.Repositories.Interfaces;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -81,6 +83,53 @@ namespace CTPortaria.Repositories.Implementations
                 .Include(x => x.Visitor)
                 .Where(x => x.Visitor.Cpf == visitorCpf)
                 .ToListAsync();
+        }
+
+        public async Task<List<GateLogModel>> SearchQueryAsync(GateLogSearchDTO searchQuery)
+        {
+            var query = _context.GateLogs
+                .Include(x => x.Employee)
+                .Include(x => x.Visitor)
+                .AsQueryable();
+
+            if (searchQuery.InitDate.HasValue)
+            {
+                query = query.Where(x => x.EnteredAt >= searchQuery.InitDate.Value);
+            }
+
+            if (searchQuery.EndDate.HasValue)
+            {
+                query = query.Where(x => x.EnteredAt < searchQuery.EndDate.Value.AddDays(1));
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.Cpf))
+            {
+                query = query.Where(x =>
+                    (x.Employee != null && x.Employee.Cpf == searchQuery.Cpf) ||
+                    (x.Visitor != null && x.Visitor.Cpf == searchQuery.Cpf));
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.Name))
+            {
+                query = query.Where(x =>
+                    (x.Employee != null && x.Employee.Name.Contains(searchQuery.Name)) ||
+                    (x.Visitor != null && x.Visitor.Name.Contains(searchQuery.Name)));
+            }
+
+            if (searchQuery.PersonType.HasValue)
+            {
+                if (searchQuery.PersonType == EPersonType.Employee)
+                {
+                    query = query.Where(x => x.Employee != null);
+                }
+
+                if (searchQuery.PersonType == EPersonType.Visitor)
+                {
+                    query = query.Where(x => x.Visitor != null);
+                }
+            }
+
+            return await query.AsNoTracking().ToListAsync();
         }
 
         // Create

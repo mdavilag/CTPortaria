@@ -49,7 +49,7 @@ namespace CTPortaria.Middlewares
 
                 default:
                     statusCode = HttpStatusCode.InternalServerError;
-                    message = "Ocorreu um erro inesperado. Tente novamente mais tarde.";
+                    message = "Ocorreu um erro inesperado. Tente novamente mais tarde." + exception.Message;
                     break;
             }
 

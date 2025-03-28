@@ -152,6 +152,22 @@ namespace CTPortaria.Services.Implementations
             }
         }
 
+        public async Task<List<GateLogServiceDTO>> SearchQueryAsync(GateLogSearchDTO searchQuery)
+        {
+            if (searchQuery.InitDate != null)
+            {
+                searchQuery.InitDate = searchQuery.InitDate.Value.Date;
+            }
+            if (searchQuery.EndDate != null)
+            {
+                searchQuery.EndDate = searchQuery.EndDate.Value.Date;
+            }
+
+            var gateLogs = await _repository.SearchQueryAsync(searchQuery);
+
+            return MapGateLogToGateLogServiceDto(gateLogs);
+        }
+
         public async Task<GateLogServiceDTO> RegisterExitAsync(int gateLogId)
         {
             var gateLog = await _repository.GetByIdAsync(gateLogId);
