@@ -162,7 +162,7 @@ namespace CTPortaria.Services.Implementations
             {
                 searchQuery.EndDate = searchQuery.EndDate.Value.Date;
             }
-
+            // Validate CPF
             var gateLogs = await _repository.SearchQueryAsync(searchQuery);
 
             return MapGateLogToGateLogServiceDto(gateLogs);
