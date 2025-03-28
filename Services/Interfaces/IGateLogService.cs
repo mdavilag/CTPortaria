@@ -14,6 +14,8 @@ namespace CTPortaria.Services.Interfaces
         Task<List<GateLogServiceDTO>> GetByEmployeeAsync(int id);
         Task<List<GateLogServiceDTO>> GetByVisitorCpfAsync(string visitorCpf);
 
+        Task<List<GateLogServiceDTO>> SearchQueryAsync();
+
         // Create
         // Task<GateLogServiceDTO> CreateAsync(GateLogModel gateLogToCreate) -> Falta criar create/updateDTO
 

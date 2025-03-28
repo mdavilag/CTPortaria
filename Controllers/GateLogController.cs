@@ -46,6 +46,12 @@ namespace CTPortaria.Controllers
             return Ok(await _service.GetByDateTimeAsync(initDate, endDate));
         }
 
+        //[HttpGet("search")]
+        //public async Task<IActionResult> SearchQueryAsync([FromQuery]DateTime initDate, [FromQuery]DateTime endDate, [FromQuery]string cpf, [FromQuery]string name)
+        //{
+
+        //};
+
         [HttpGet("employeeId/{id:int}")]
         public async Task<IActionResult> GetByEmployeeAsync([FromRoute]int id)
         {
