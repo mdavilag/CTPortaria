@@ -1,4 +1,6 @@
 ﻿using CTPortaria.DTOs;
+using CTPortaria.Entities;
+using CTPortaria.Exceptions;
 using CTPortaria.Repositories.Interfaces;
 using CTPortaria.Services.Interfaces;
 using CTPortaria.Utils.Validators;
@@ -11,7 +13,18 @@ namespace CTPortaria.Services.Implementations
         private readonly IPersonValidator _validator;
         public async Task<VisitorServiceDTO> GetByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            if (!_validator.ValidateName(name))
+            {
+                throw new ValidationException("Nome inválido");
+            }
+
+            var visitor = await _repository.GetByNameAsync(name);
+            if (visitor == null)
+            {
+                throw new NotFoundException("Visitante não encontrado");
+            }
+
+            return MapVisitorModelToVisitorServiceDto(visitor);
         }
 
         public async Task<List<VisitorServiceDTO>> GetAllAsync()
@@ -47,6 +60,19 @@ namespace CTPortaria.Services.Implementations
         public async Task<bool> ExistsByCpf(string cpf)
         {
             throw new NotImplementedException();
+        }
+
+        public VisitorServiceDTO MapVisitorModelToVisitorServiceDto(VisitorModel visitorModel)
+        {
+            var visitorDto = new VisitorServiceDTO()
+            {
+                Id = visitorModel.Id,
+                Name = visitorModel.Name,
+                Cpf = visitorModel.Cpf,
+                CompanyName = visitorModel.CompanyName
+            };
+
+            return visitorDto;
         }
     }
 }
