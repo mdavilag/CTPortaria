@@ -1,5 +1,6 @@
 ﻿using CTPortaria.Data;
 using CTPortaria.Entities;
+using CTPortaria.Exceptions;
 using CTPortaria.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,27 +37,40 @@ namespace CTPortaria.Repositories.Implementations
 
         public async Task<VisitorModel> CreateAsync(VisitorModel visitorToCreate)
         {
-            throw new NotImplementedException();
+            await _context.Visitors.AddAsync(visitorToCreate);
+            await _context.SaveChangesAsync();
+            return visitorToCreate;
         }
 
         public async Task<VisitorModel> UpdateAsync(VisitorModel visitorToUpdate)
         {
-            throw new NotImplementedException();
+            _context.Visitors.Update(visitorToUpdate);
+            await _context.SaveChangesAsync();
+            return await GetByIdAsync(visitorToUpdate.Id);
         }
 
         public async Task<bool> DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var visitorToDelete = await GetByIdAsync(id);
+            if (visitorToDelete == null)
+            {
+                throw new NotFoundException("Visitante não encontrado");
+            }
+
+            _context.Visitors.Remove(visitorToDelete);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<bool> ExistsById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Visitors.AnyAsync(x => x.Id == id);
         }
 
         public async Task<bool> ExistsByCpf(string cpf)
         {
-            throw new NotImplementedException();
+            return await _context.Visitors.AnyAsync(x => x.Cpf == cpf);
         }
     }
 }
