@@ -56,16 +56,6 @@ namespace CTPortaria.Repositories.Implementations
                 .ToListAsync();
         }
 
-        public async Task<List<GateLogModel>> GetByDateTimeAsync(DateTime initDate, DateTime endDate)
-        {
-            return await _context.GateLogs
-                .AsNoTracking()
-                .Where(x => x.EnteredAt >= initDate && x.EnteredAt <= endDate)
-                .Include(x => x.Employee)
-                .Include(x => x.Visitor)
-                .ToListAsync();
-        }
-
         public async Task<List<GateLogModel>> GetByEmployeeAsync(int id)
         {
             return await _context.GateLogs
@@ -73,16 +63,6 @@ namespace CTPortaria.Repositories.Implementations
                 .Where(x => x.EmployeeId == id)
                 .Include(x => x.Employee)
                 .Include(x => x.Visitor)
-                .ToListAsync();
-        }
-
-        public async Task<List<GateLogModel>> GetByPersonCpfAsync(string personCpf)
-        {
-            return await _context.GateLogs
-                .AsNoTracking()
-                .Include(x=>x.Employee)
-                .Include(x => x.Visitor)
-                .Where(x => x.Employee.Cpf == personCpf || x.Visitor.Cpf == personCpf)
                 .ToListAsync();
         }
 

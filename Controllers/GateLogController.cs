@@ -41,12 +41,6 @@ namespace CTPortaria.Controllers
             return Ok(await _service.GetByDayAsync(date));
         }
 
-        [HttpGet("datetime/")]
-        public async Task<IActionResult> GetByDateTime([FromQuery] DateTime initDate, DateTime endDate)
-        {
-            return Ok(await _service.GetByDateTimeAsync(initDate, endDate));
-        }
-
         [HttpGet("search")]
         public async Task<IActionResult> SearchQueryAsync([FromQuery] GateLogSearchDTO gateLog)
         {
@@ -57,11 +51,6 @@ namespace CTPortaria.Controllers
         public async Task<IActionResult> GetByEmployeeAsync([FromRoute]int id)
         {
             return Ok(await _service.GetByEmployeeAsync(id));
-        }
-        [HttpGet("visitorCpf/{cpf}")]
-        public async Task<IActionResult> GetByVisitorAsync([FromRoute] string cpf)
-        {
-            return Ok(await _service.GetByPersonCpfAsync(cpf));
         }
 
         [HttpPut("exit/{id:int}")]

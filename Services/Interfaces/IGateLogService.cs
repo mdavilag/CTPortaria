@@ -10,9 +10,7 @@ namespace CTPortaria.Services.Interfaces
 
         Task<GateLogServiceDTO> GetByIdAsync(int id);
         Task<List<GateLogServiceDTO>> GetByDayAsync(DateTime date);
-        Task<List<GateLogServiceDTO>> GetByDateTimeAsync(DateTime initDate, DateTime endDate);
         Task<List<GateLogServiceDTO>> GetByEmployeeAsync(int id);
-        Task<List<GateLogServiceDTO>> GetByPersonCpfAsync(string visitorCpf);
 
         Task<List<GateLogServiceDTO>> SearchQueryAsync(GateLogSearchDTO searchQuery);
 

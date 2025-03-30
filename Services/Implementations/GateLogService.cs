@@ -99,23 +99,6 @@ namespace CTPortaria.Services.Implementations
             }
         }
 
-        public async Task<List<GateLogServiceDTO>> GetByDateTimeAsync(DateTime initDate, DateTime endDate)
-        {
-            if (initDate == default || endDate == default)
-            {
-                throw new ValidationException("Data de pesquisa inválida");
-            }
-
-            try
-            {
-                var gateLogs = await _repository.GetByDateTimeAsync(initDate, endDate);
-                return MapGateLogToGateLogServiceDto(gateLogs);
-            }
-            catch
-            {
-                throw new AppException("Erro ao localizar registros");
-            }
-        }
 
         public async Task<List<GateLogServiceDTO>> GetByEmployeeAsync(int id)
         {
@@ -132,23 +115,6 @@ namespace CTPortaria.Services.Implementations
             }
         }
 
-        public async Task<List<GateLogServiceDTO>> GetByPersonCpfAsync(string personCpf)
-        {
-            if (_validator.ValidateCpf(personCpf))
-            {
-                personCpf = _validator.CleanCpf(personCpf);
-            }
-
-            try
-            {
-                var gateLogs = await _repository.GetByPersonCpfAsync(personCpf);
-                return MapGateLogToGateLogServiceDto(gateLogs);
-            }
-            catch (Exception ex)
-            {
-                throw new AppException("Erro ao localizar registros " + ex.Message);
-            }
-        }
 
         public async Task<List<GateLogServiceDTO>> SearchQueryAsync(GateLogSearchDTO searchQuery)
         {
@@ -161,11 +127,16 @@ namespace CTPortaria.Services.Implementations
                 searchQuery.EndDate = searchQuery.EndDate.Value.Date;
             }
 
-            if (!_validator.ValidateCpf(searchQuery.Cpf))
+            if (!string.IsNullOrWhiteSpace(searchQuery.Cpf))
             {
-                throw new ValidationException("Cpf inválido");
+                if (!_validator.ValidateCpf(searchQuery.Cpf))
+                {
+                    throw new ValidationException("Cpf inválido");
+                }
+
+                searchQuery.Cpf = _validator.CleanCpf(searchQuery.Cpf);
             }
-            searchQuery.Cpf = _validator.CleanCpf(searchQuery.Cpf);
+            
             var gateLogs = await _repository.SearchQueryAsync(searchQuery);
 
             return MapGateLogToGateLogServiceDto(gateLogs);

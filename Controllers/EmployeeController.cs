@@ -30,13 +30,6 @@ namespace CTPortaria.Controllers
         {
             var employee = await _service.GetByNameAsync(name);
             
-            //var employeeViewModel = new EmployeeDetailedViewModel()
-            //{
-            //    Name = employee.Data.Name,
-            //    Cpf = employee.Data.Cpf,
-            //    JobRole = employee.Data.JobRole,
-            //    IsActive = employee.Data.IsActive
-            //};
             var employeeViewModel = _mapper.Map<EmployeeDetailedViewModel>(employee);
 
             return Ok(employeeViewModel);
@@ -47,14 +40,6 @@ namespace CTPortaria.Controllers
         {
             var employeesResult = await _service.GetAllAsync();
 
-            //var employeesViewModelList = employeesResult.Data.Select(x => new EmployeeDetailedViewModel()
-            //{
-            //    Name = x.Name,
-            //    Cpf = x.Cpf,
-            //    JobRole = x.JobRole,
-            //    IsActive = x.IsActive
-            //}).ToList();
-
             var employeesViewModel = _mapper.Map<List<EmployeeDetailedViewModel>>(employeesResult);
 
             return Ok(employeesViewModel);
@@ -64,18 +49,8 @@ namespace CTPortaria.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var employee = await _service.GetByIdAsync(id);
-            
-
-            //var employeeViewModel = new EmployeeDetailedViewModel()
-            //{
-            //    Name = employee.Data.Name,
-            //    Cpf = employee.Data.Cpf,
-            //    JobRole = employee.Data.JobRole,
-            //    IsActive = employee.Data.IsActive
-            //};
 
             var employeeViewModel = _mapper.Map<EmployeeDetailedViewModel>(employee);
-
 
             return Ok(employeeViewModel);
         }
