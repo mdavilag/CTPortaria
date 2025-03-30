@@ -24,6 +24,8 @@ builder.Services.AddScoped<IEmployeeRepository,EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IGateLogRepository, GateLogRepository>();
 builder.Services.AddScoped<IGateLogService, GateLogService>();
+builder.Services.AddScoped<IVisitorRepository, VisitorRepository>();
+builder.Services.AddScoped<IVisitorService, VisitorService>();
 builder.Services.AddTransient<IPersonValidator, PersonValidator>();
 
 var app = builder.Build();
