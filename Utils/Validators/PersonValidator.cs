@@ -2,7 +2,7 @@
 
 namespace CTPortaria.Utils.Validators
 {
-    public class EmployeeValidator : IEmployeeValidator
+    public class PersonValidator : IPersonValidator
     {
         public bool ValidateName(string name)
         {
@@ -13,8 +13,9 @@ namespace CTPortaria.Utils.Validators
 
         public bool ValidateCpf(string cpf)
         {
-            if (cpf.Length != 11) return false;
-            if (Regex.IsMatch(cpf, "^\\d{11}$")) return true;
+            var cleanedCpf = cpf.Trim().Replace(".", "").Replace("-", "");
+            if (cleanedCpf.Length != 11) return false;
+            if (Regex.IsMatch(cleanedCpf, "^\\d{11}$")) return true;
             return false;
         }
 
@@ -23,6 +24,11 @@ namespace CTPortaria.Utils.Validators
             if (jobRole.Length <= 3) return false;
             if (Regex.IsMatch(jobRole, ".*\\d.*")) return false;
             return true;
+        }
+
+        public string CleanCpf(string cpf)
+        {
+            return cpf.Trim().Replace("-", "").Replace(".", "");
         }
     }
 }

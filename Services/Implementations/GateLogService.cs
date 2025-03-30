@@ -6,6 +6,7 @@ using CTPortaria.Enums;
 using CTPortaria.Exceptions;
 using CTPortaria.Repositories.Interfaces;
 using CTPortaria.Services.Interfaces;
+using CTPortaria.Utils.Validators;
 using Microsoft.EntityFrameworkCore;
 
 namespace CTPortaria.Services.Implementations
@@ -13,11 +14,13 @@ namespace CTPortaria.Services.Implementations
     public class GateLogService : IGateLogService
     {
         private readonly IGateLogRepository _repository;
+        private readonly IPersonValidator _validator;
         private readonly IMapper _mapper;
 
-        public GateLogService(IGateLogRepository repository, IMapper mapper)
+        public GateLogService(IGateLogRepository repository, IMapper mapper, IPersonValidator validator)
         {
             _repository = repository;
+            _validator = validator;
             _mapper = mapper;
         }
         public async Task<List<GateLogServiceDTO>> GetAllAsync()
@@ -129,21 +132,16 @@ namespace CTPortaria.Services.Implementations
             }
         }
 
-        public async Task<List<GateLogServiceDTO>> GetByVisitorCpfAsync(string visitorCpf)
+        public async Task<List<GateLogServiceDTO>> GetByPersonCpfAsync(string personCpf)
         {
-            if (string.IsNullOrEmpty(visitorCpf))
+            if (_validator.ValidateCpf(personCpf))
             {
-                throw new AppException("Cpf inválido");
-            }
-
-            if (visitorCpf.Replace(".", "").Replace("-", "").Length != 11)
-            {
-                throw new ValidationException("Cpf inválido");
+                personCpf = _validator.CleanCpf(personCpf);
             }
 
             try
             {
-                var gateLogs = await _repository.GetByVisitorCpfAsync(visitorCpf);
+                var gateLogs = await _repository.GetByPersonCpfAsync(personCpf);
                 return MapGateLogToGateLogServiceDto(gateLogs);
             }
             catch (Exception ex)
@@ -162,7 +160,12 @@ namespace CTPortaria.Services.Implementations
             {
                 searchQuery.EndDate = searchQuery.EndDate.Value.Date;
             }
-            // Validate CPF
+
+            if (!_validator.ValidateCpf(searchQuery.Cpf))
+            {
+                throw new ValidationException("Cpf inválido");
+            }
+            searchQuery.Cpf = _validator.CleanCpf(searchQuery.Cpf);
             var gateLogs = await _repository.SearchQueryAsync(searchQuery);
 
             return MapGateLogToGateLogServiceDto(gateLogs);

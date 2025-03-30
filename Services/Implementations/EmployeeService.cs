@@ -11,10 +11,10 @@ namespace CTPortaria.Services.Implementations
     public class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeRepository _repository;
-        private readonly IEmployeeValidator _validator;
+        private readonly IPersonValidator _validator;
         private readonly IMapper _mapper;
 
-        public EmployeeService(IEmployeeRepository repository, IEmployeeValidator validator, IMapper mapper)
+        public EmployeeService(IEmployeeRepository repository, IPersonValidator validator, IMapper mapper)
         {
             _repository = repository;
             _validator = validator;

@@ -61,7 +61,7 @@ namespace CTPortaria.Controllers
         [HttpGet("visitorCpf/{cpf}")]
         public async Task<IActionResult> GetByVisitorAsync([FromRoute] string cpf)
         {
-            return Ok(await _service.GetByVisitorCpfAsync(cpf));
+            return Ok(await _service.GetByPersonCpfAsync(cpf));
         }
 
         [HttpPut("exit/{id:int}")]

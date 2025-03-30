@@ -76,12 +76,13 @@ namespace CTPortaria.Repositories.Implementations
                 .ToListAsync();
         }
 
-        public async Task<List<GateLogModel>> GetByVisitorCpfAsync(string visitorCpf)
+        public async Task<List<GateLogModel>> GetByPersonCpfAsync(string personCpf)
         {
             return await _context.GateLogs
                 .AsNoTracking()
+                .Include(x=>x.Employee)
                 .Include(x => x.Visitor)
-                .Where(x => x.Visitor.Cpf == visitorCpf)
+                .Where(x => x.Employee.Cpf == personCpf || x.Visitor.Cpf == personCpf)
                 .ToListAsync();
         }
 
