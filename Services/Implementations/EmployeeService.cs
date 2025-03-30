@@ -89,20 +89,16 @@ namespace CTPortaria.Services.Implementations
             if (!_validator.ValidateName(employeeCreateDto.Name))
             {
                 validationErrors.Add("Nome inválido");
-                //return new ResultService<EmployeeServiceDTO>("Nome inválido");
             }
 
             if (!_validator.ValidateCpf(employeeCreateDto.Cpf.Trim().Replace(".", "").Replace("-", "")))
             {
                 validationErrors.Add("Cpf inválido");
-
-                // return new ResultService<EmployeeServiceDTO>("Cpf inválido");
             }
 
             if (!_validator.ValidateJobRole(employeeCreateDto.JobRole))
             {
                 validationErrors.Add("Cargo inválido");
-                // return new ResultService<EmployeeServiceDTO>("Cargo inválido");
             }
 
             // Validate if Cpf already exists
@@ -115,6 +111,7 @@ namespace CTPortaria.Services.Implementations
                 throw new ValidationException(validationErrors);
             }
 
+            // Validate if employee already has Visitor Profile
 
             // Map
             var employeeToCreate = MapCreateDtoToEmployeeModel(employeeCreateDto);
@@ -127,7 +124,6 @@ namespace CTPortaria.Services.Implementations
             catch (Exception ex)
             {
                 throw new AppException("Erro ao criar usuário no banco de dados" + ex.Message);
-                // return new ResultService<EmployeeServiceDTO>("Erro ao criar");
             }
         }
 
