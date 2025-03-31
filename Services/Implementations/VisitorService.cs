@@ -36,7 +36,17 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<VisitorServiceDTO> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            if (!_validator.ValidateId(id))
+            {
+                throw new ValidationException("Id inválido");
+            }
+            var visitor = await _repository.GetByIdAsync(id);
+            if (visitor == null)
+            {
+                throw new NotFoundException("Visitante não encontrado");
+            }
+
+            return MapVisitorModelToVisitorServiceDto(visitor);
         }
 
         public async Task<VisitorServiceDTO> CreateAsync(VisitorCreateDTO visitorToCreate)

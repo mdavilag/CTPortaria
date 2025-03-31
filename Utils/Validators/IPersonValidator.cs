@@ -6,5 +6,6 @@
         bool ValidateCpf(string cpf);
         bool ValidateJobRole(string jobRole);
         string CleanCpf(string cpf);
+        bool ValidateId(int id);
     }
 }
