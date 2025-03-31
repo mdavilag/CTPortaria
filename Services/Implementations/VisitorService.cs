@@ -29,7 +29,9 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<List<VisitorServiceDTO>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var visitors = await _repository.GetAllAsync();
+
+            return MapVisitorModelToVisitorServiceDto(visitors);
         }
 
         public async Task<VisitorServiceDTO> GetByIdAsync(int id)
@@ -73,6 +75,17 @@ namespace CTPortaria.Services.Implementations
             };
 
             return visitorDto;
+        }
+
+        public List<VisitorServiceDTO> MapVisitorModelToVisitorServiceDto(List<VisitorModel> visitorModels)
+        {
+            return visitorModels.Select(model => new VisitorServiceDTO()
+            {
+                Id = model.Id,
+                Name = model.Name,
+                Cpf = model.Cpf,
+                CompanyName = model.CompanyName
+            }).ToList();
         }
     }
 }
