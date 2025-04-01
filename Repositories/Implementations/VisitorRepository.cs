@@ -32,7 +32,7 @@ namespace CTPortaria.Repositories.Implementations
         {
             return await _context.Visitors
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x=>x.Id == id)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<VisitorModel> CreateAsync(VisitorModel visitorToCreate)

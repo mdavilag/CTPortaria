@@ -51,7 +51,36 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<VisitorServiceDTO> CreateAsync(VisitorCreateDTO visitorToCreate)
         {
-            throw new NotImplementedException();
+            var validateErrors = new List<string>();
+            if (!_validator.ValidateCpf(visitorToCreate.Cpf))
+            {
+                validateErrors.Add("Cpf inválido");
+            }
+
+            if (!_validator.ValidateName(visitorToCreate.Name))
+            {
+                validateErrors.Add("Nome inválido");
+            }
+
+            if (!_validator.ValidateName(visitorToCreate.CompanyName))
+            {
+                validateErrors.Add("Nome da empresa inválido");
+            }
+
+            if (validateErrors.Any())
+            {
+                throw new ValidationException(validateErrors);
+            }
+
+            var visitorModel = new VisitorModel()
+            {
+                Name = visitorToCreate.Name,
+                CompanyName = visitorToCreate.CompanyName,
+                Cpf = visitorToCreate.Cpf
+            };
+
+            var created = await _repository.CreateAsync(visitorModel);
+            return MapVisitorModelToVisitorServiceDto(created);
         }
 
         public async Task<VisitorServiceDTO> UpdateAsync(VisitorCreateDTO visitorToUpdate)
