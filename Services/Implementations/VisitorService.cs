@@ -11,6 +11,12 @@ namespace CTPortaria.Services.Implementations
     {
         private readonly IVisitorRepository _repository;
         private readonly IPersonValidator _validator;
+
+        public VisitorService(IVisitorRepository repository, IPersonValidator validator)
+        {
+            _repository = repository;
+            _validator = validator;
+        }
         public async Task<VisitorServiceDTO> GetByNameAsync(string name)
         {
             if (!_validator.ValidateName(name))
