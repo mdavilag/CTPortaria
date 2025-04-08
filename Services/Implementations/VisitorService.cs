@@ -148,7 +148,12 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<bool> ExistsByCpf(string cpf)
         {
-            throw new NotImplementedException();
+            if (!_validator.ValidateCpf(cpf))
+            {
+                throw new ValidationException("Cpf inválido");
+            }
+
+            return await _repository.ExistsByCpf(cpf);
         }
 
         public VisitorServiceDTO MapVisitorModelToVisitorServiceDto(VisitorModel visitorModel)
