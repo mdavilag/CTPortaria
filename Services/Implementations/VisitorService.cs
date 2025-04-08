@@ -143,7 +143,12 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<bool> ExistsById(int id)
         {
-            throw new NotImplementedException();
+            if (!_validator.ValidateId(id))
+            {
+                throw new ValidationException("Id inválido");
+            }
+
+            return await _repository.ExistsById(id);
         }
 
         public async Task<bool> ExistsByCpf(string cpf)
