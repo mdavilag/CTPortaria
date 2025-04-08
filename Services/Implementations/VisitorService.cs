@@ -83,9 +83,45 @@ namespace CTPortaria.Services.Implementations
             return MapVisitorModelToVisitorServiceDto(created);
         }
 
-        public async Task<VisitorServiceDTO> UpdateAsync(VisitorCreateDTO visitorToUpdate)
+        public async Task<VisitorServiceDTO> UpdateAsync(int id, VisitorCreateDTO visitorToUpdate)
         {
-            throw new NotImplementedException();
+            var validateErrors = new List<string>();
+            if (!_validator.ValidateCpf(visitorToUpdate.Cpf))
+            {
+                validateErrors.Add("Cpf inválido");
+            }
+
+            if (!_validator.ValidateId(id))
+            {
+                validateErrors.Add("Id inválido");
+            }
+
+            if (!_validator.ValidateName(visitorToUpdate.CompanyName))
+            {
+                validateErrors.Add("Empresa inválida");
+            }
+
+            if (validateErrors.Any())
+            {
+                throw new ValidationException(validateErrors);
+            }
+
+            var visitor = await _repository.GetByIdAsync(id);
+            if (visitor == null)
+            {
+                throw new NotFoundException("Visitante não encontrado");
+            }
+
+            var updatedVisitor = new VisitorModel()
+            {
+                Id = visitor.Id,
+                Name = visitorToUpdate.Name,
+                CompanyName = visitorToUpdate.CompanyName,
+                Cpf = visitorToUpdate.Cpf
+            };
+             var update = await _repository.UpdateAsync(updatedVisitor);
+
+             return MapVisitorModelToVisitorServiceDto(update);
         }
 
         public async Task<bool> DeleteByIdAsync(int id)

@@ -9,7 +9,7 @@ namespace CTPortaria.Services.Interfaces
         Task<List<VisitorServiceDTO>> GetAllAsync();
         Task<VisitorServiceDTO> GetByIdAsync(int id);
         Task<VisitorServiceDTO> CreateAsync(VisitorCreateDTO visitorToCreate);
-        Task<VisitorServiceDTO> UpdateAsync(VisitorCreateDTO visitorToUpdate);
+        Task<VisitorServiceDTO> UpdateAsync(int id, VisitorCreateDTO visitorToUpdate);
         Task<bool> DeleteByIdAsync(int id);
         Task<bool> ExistsById(int id);
         Task<bool> ExistsByCpf(string cpf);
