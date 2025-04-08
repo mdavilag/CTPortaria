@@ -126,7 +126,19 @@ namespace CTPortaria.Services.Implementations
 
         public async Task<bool> DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            if (!_validator.ValidateId(id))
+            {
+                throw new ValidationException("Invalid Id");
+            }
+
+            var userToDelete = await _repository.GetByIdAsync(id);
+
+            if (userToDelete == null)
+            {
+                throw new NotFoundException("Visitor Not Found");
+            }
+
+            return await _repository.DeleteByIdAsync(id);
         }
 
         public async Task<bool> ExistsById(int id)
