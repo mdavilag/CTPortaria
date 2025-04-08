@@ -27,5 +27,10 @@ namespace CTPortaria.Controllers
             var visitor = await _service.GetByNameAsync(name);
             return Ok(visitor);
         }
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetByIdAsync([FromRoute]int id)
+        {
+            return Ok(await _service.GetByIdAsync(id));
+        }
     }
 }

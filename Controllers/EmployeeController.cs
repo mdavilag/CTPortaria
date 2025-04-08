@@ -45,7 +45,7 @@ namespace CTPortaria.Controllers
             return Ok(employeesViewModel);
         }
 
-        [HttpGet("id/{id:int}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
             var employee = await _service.GetByIdAsync(id);
