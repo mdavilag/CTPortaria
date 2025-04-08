@@ -20,5 +20,12 @@ namespace CTPortaria.Controllers
         {
             return Ok(await _service.GetAllAsync());
         }
+
+        [HttpGet("name")]
+        public async Task<IActionResult> GetByNameAsync([FromQuery]string name)
+        {
+            var visitor = await _service.GetByNameAsync(name);
+            return Ok(visitor);
+        }
     }
 }

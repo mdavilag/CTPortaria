@@ -21,13 +21,13 @@ namespace CTPortaria.Services.Implementations
         {
             if (!_validator.ValidateName(name))
             {
-                throw new ValidationException("Invalid Name");
+                throw new ValidationException("Nome inválido");
             }
 
             var visitor = await _repository.GetByNameAsync(name);
             if (visitor == null)
             {
-                throw new NotFoundException("Visitor not found");
+                throw new NotFoundException("Visitante não encontrado");
             }
 
             return MapVisitorModelToVisitorServiceDto(visitor);
@@ -44,12 +44,12 @@ namespace CTPortaria.Services.Implementations
         {
             if (!_validator.ValidateId(id))
             {
-                throw new ValidationException("Invalid Id");
+                throw new ValidationException("Id inválido");
             }
             var visitor = await _repository.GetByIdAsync(id);
             if (visitor == null)
             {
-                throw new NotFoundException("Visitor not found");
+                throw new NotFoundException("Visitante não encontrado");
             }
 
             return MapVisitorModelToVisitorServiceDto(visitor);
@@ -60,17 +60,17 @@ namespace CTPortaria.Services.Implementations
             var validateErrors = new List<string>();
             if (!_validator.ValidateCpf(visitorToCreate.Cpf))
             {
-                validateErrors.Add("Invalid CPF");
+                validateErrors.Add("CPF inválido");
             }
 
             if (!_validator.ValidateName(visitorToCreate.Name))
             {
-                validateErrors.Add("Invalid Name");
+                validateErrors.Add("Nome inválido");
             }
 
             if (!_validator.ValidateName(visitorToCreate.CompanyName))
             {
-                validateErrors.Add("Invalid Company Name");
+                validateErrors.Add("Nome de empresa inválida");
             }
 
             if (validateErrors.Any())
@@ -94,17 +94,17 @@ namespace CTPortaria.Services.Implementations
             var validateErrors = new List<string>();
             if (!_validator.ValidateCpf(visitorToUpdate.Cpf))
             {
-                validateErrors.Add("Invalid Cpf");
+                validateErrors.Add("CPF inválido");
             }
 
             if (!_validator.ValidateId(id))
             {
-                validateErrors.Add("Invalid Id");
+                validateErrors.Add("Id inválido");
             }
 
             if (!_validator.ValidateName(visitorToUpdate.CompanyName))
             {
-                validateErrors.Add("Invalid Company Name");
+                validateErrors.Add("Nome da empresa inválido");
             }
 
             if (validateErrors.Any())
@@ -115,7 +115,7 @@ namespace CTPortaria.Services.Implementations
             var visitor = await _repository.GetByIdAsync(id);
             if (visitor == null)
             {
-                throw new NotFoundException("Visitor not found");
+                throw new NotFoundException("Visitante não encontrado");
             }
 
             var updatedVisitor = new VisitorModel()
@@ -134,14 +134,14 @@ namespace CTPortaria.Services.Implementations
         {
             if (!_validator.ValidateId(id))
             {
-                throw new ValidationException("Invalid Id");
+                throw new ValidationException("Id inválido");
             }
 
             var userToDelete = await _repository.GetByIdAsync(id);
 
             if (userToDelete == null)
             {
-                throw new NotFoundException("Visitor Not Found");
+                throw new NotFoundException("Visitante não encontrado");
             }
 
             return await _repository.DeleteByIdAsync(id);
@@ -151,7 +151,7 @@ namespace CTPortaria.Services.Implementations
         {
             if (!_validator.ValidateId(id))
             {
-                throw new ValidationException("Invalid id");
+                throw new ValidationException("Id inválido");
             }
 
             return await _repository.ExistsById(id);
@@ -161,7 +161,7 @@ namespace CTPortaria.Services.Implementations
         {
             if (!_validator.ValidateCpf(cpf))
             {
-                throw new ValidationException("Invalid CPF");
+                throw new ValidationException("CPF inválido");
             }
 
             return await _repository.ExistsByCpf(cpf);
