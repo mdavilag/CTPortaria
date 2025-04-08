@@ -130,13 +130,13 @@ namespace CTPortaria.Repositories.Implementations
 
         public async Task<bool> DeleteByIdAsync(int id)
         {
-            var userToDelete = await GetByIdAsync(id);
-            if (userToDelete == null)
+            var gateLogToDelete = await GetByIdAsync(id);
+            if (gateLogToDelete == null)
             {
                 throw new NotFoundException("Usuário não encontrado");
             }
 
-            _context.Remove(userToDelete);
+            _context.GateLogs.Remove(gateLogToDelete);
             await _context.SaveChangesAsync();
             return true;
         }
