@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CTPortaria.Utils.Validators
 {
@@ -29,6 +30,12 @@ namespace CTPortaria.Utils.Validators
         public string CleanCpf(string cpf)
         {
             return cpf.Trim().Replace("-", "").Replace(".", "");
+        }
+
+        public bool ValidateId(int id)
+        {
+            if (id < 0) return false;
+            return true;
         }
     }
 }
