@@ -73,6 +73,11 @@ namespace CTPortaria.Services.Implementations
                 validateErrors.Add("Nome de empresa inválida");
             }
 
+            if (await _repository.ExistsByCpf(visitorToCreate.Cpf))
+            {
+                validateErrors.Add("Cpf já cadastrado");
+            }
+
             if (validateErrors.Any())
             {
                 throw new ValidationException(validateErrors);
@@ -82,7 +87,8 @@ namespace CTPortaria.Services.Implementations
             {
                 Name = visitorToCreate.Name,
                 CompanyName = visitorToCreate.CompanyName,
-                Cpf = visitorToCreate.Cpf
+                Cpf = visitorToCreate.Cpf,
+                GateLogs = new List<GateLogModel>()
             };
 
             var created = await _repository.CreateAsync(visitorModel);
@@ -106,12 +112,12 @@ namespace CTPortaria.Services.Implementations
             {
                 validateErrors.Add("Nome da empresa inválido");
             }
-
+            
             if (validateErrors.Any())
             {
                 throw new ValidationException(validateErrors);
             }
-
+            
             var visitor = await _repository.GetByIdAsync(id);
             if (visitor == null)
             {
