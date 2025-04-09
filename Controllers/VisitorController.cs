@@ -47,6 +47,12 @@ namespace CTPortaria.Controllers
             var updated = await _service.UpdateAsync(id, visitorDto);
             return Ok(updated);
         }
-        
-    }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteAsync([FromRoute] int id)
+        {
+            var deleted = await _service.DeleteByIdAsync(id);
+            return NoContent();
+        }
+    } 
 }
