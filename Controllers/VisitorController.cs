@@ -1,4 +1,5 @@
-﻿using CTPortaria.Services.Interfaces;
+﻿using CTPortaria.DTOs;
+using CTPortaria.Services.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,5 +33,20 @@ namespace CTPortaria.Controllers
         {
             return Ok(await _service.GetByIdAsync(id));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync([FromBody] VisitorCreateDTO visitorDto)
+        {
+            var created = await _service.CreateAsync(visitorDto);
+            return CreatedAtAction(nameof(GetByIdAsync),new {id = created.Id}, created);
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateAsync([FromRoute]int id,[FromBody] VisitorCreateDTO visitorDto)
+        {
+            var updated = await _service.UpdateAsync(id, visitorDto);
+            return Ok(updated);
+        }
+        
     }
 }
