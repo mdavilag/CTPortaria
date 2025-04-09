@@ -13,15 +13,11 @@ namespace CTPortaria.Data
         public DbSet<EmployeeModel> Employees { get; set; }
         public DbSet<GateLogModel> GateLogs { get; set; }
         public DbSet<VisitorModel> Visitors { get; set; }
-        public DbSet<PackageModel> Packages { get; set; }
-        public DbSet<VehicleModel> Vehicles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new EmployeeMap());
             modelBuilder.ApplyConfiguration(new GateLogMap());
             modelBuilder.ApplyConfiguration(new VisitorMap());
-            modelBuilder.ApplyConfiguration(new PackageMap());
-            modelBuilder.ApplyConfiguration(new VehicleMap());
         }
     }
 }

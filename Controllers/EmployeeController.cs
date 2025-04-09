@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CTPortaria.Controllers
 {
     [ApiController]
-    [Route("v1/employees")]
+    [Route("v1/Employees")]
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _service;
@@ -45,7 +45,7 @@ namespace CTPortaria.Controllers
             return Ok(employeesViewModel);
         }
 
-        [HttpGet("id/{id:int}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
             var employee = await _service.GetByIdAsync(id);
