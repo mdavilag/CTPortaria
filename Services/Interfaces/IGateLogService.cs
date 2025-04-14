@@ -15,7 +15,7 @@ namespace CTPortaria.Services.Interfaces
         Task<List<GateLogServiceDTO>> SearchQueryAsync(GateLogSearchDTO searchQuery);
 
 
-        Task<GateLogServiceDTO> CreateAsync(GateLogModel gateLogToCreate);
+        Task<GateLogServiceDTO> CreateAsync(GateLogCreateDTO gateLogToCreate);
 
         // Update
         // Task<GateLogServiceDTO> UpdateAsync(); -> Falta criar create/updateDTO

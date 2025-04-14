@@ -7,6 +7,7 @@ using CTPortaria.Exceptions;
 using CTPortaria.Repositories.Interfaces;
 using CTPortaria.Services.Interfaces;
 using CTPortaria.Utils.Validators;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CTPortaria.Services.Implementations
@@ -140,6 +141,45 @@ namespace CTPortaria.Services.Implementations
             var gateLogs = await _repository.SearchQueryAsync(searchQuery);
 
             return MapGateLogToGateLogServiceDto(gateLogs);
+        }
+
+        public async Task<GateLogServiceDTO> CreateAsync(GateLogCreateDTO gateLogToCreate)
+        {
+            var validationErrors = new List<string>();
+            if (gateLogToCreate.EmployeeId == null && gateLogToCreate.VisitorId == null)
+            {
+                validationErrors.Add("Nenhuma informação de pessoa recebida");
+            }
+
+            if (gateLogToCreate.EnteredAt == default)
+            {
+                validationErrors.Add("Horário de entrada inválido");
+            }
+
+            if (!_validator.ValidateName(gateLogToCreate.RegisteredBy))
+            {
+                validationErrors.Add("Nome do porteiro inválido");
+            }
+
+            if (validationErrors.Any())
+            {
+                throw new ValidationException(validationErrors);
+            }
+
+            var createModel = new GateLogModel()
+            {
+                EmployeeId = gateLogToCreate.EmployeeId,
+                VisitorId = gateLogToCreate.EmployeeId == null ? gateLogToCreate.VisitorId : null,
+                EnteredAt = gateLogToCreate.EnteredAt,
+                CreatedAt = DateTime.Now,
+                RegisteredBy = gateLogToCreate.RegisteredBy,
+                Description = string.IsNullOrEmpty(gateLogToCreate.Description) ? "" : gateLogToCreate.Description
+            };
+
+            var createResult = await _repository.CreateAsync(createModel);
+
+            return MapGateLogToGateLogServiceDto(createResult);
+
         }
 
         public async Task<GateLogServiceDTO> RegisterExitAsync(int gateLogId)
