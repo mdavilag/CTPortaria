@@ -30,7 +30,7 @@ namespace CTPortaria.Controllers
             return Ok(await _service.GetAllInsideAsync());
         }
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
+        public async Task<IActionResult> GetById([FromRoute]int id)
         {
             return Ok(await _service.GetByIdAsync(id));
         }
@@ -51,6 +51,13 @@ namespace CTPortaria.Controllers
         public async Task<IActionResult> GetByEmployeeAsync([FromRoute]int id)
         {
             return Ok(await _service.GetByEmployeeAsync(id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateGateLogAsync([FromBody] GateLogCreateDTO createDto)
+        {
+            var created = await _service.CreateAsync(createDto);
+            return CreatedAtAction(nameof(GetById), null, new { id = created.Id }, created);
         }
 
         [HttpPut("exit/{id:int}")]
