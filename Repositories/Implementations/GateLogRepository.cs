@@ -113,7 +113,7 @@ namespace CTPortaria.Repositories.Implementations
             return await query.AsNoTracking().ToListAsync();
         }
 
-        public async Task<bool> IsPersonInside(EPersonType personType, int id)
+        public async Task<bool> IsPersonInside(EPersonType personType, int? id)
         {
             if (personType == EPersonType.Employee)
             {
