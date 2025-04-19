@@ -1,5 +1,6 @@
 ﻿using CTPortaria.DTOs;
 using CTPortaria.Entities;
+using CTPortaria.Enums;
 
 namespace CTPortaria.Repositories.Interfaces
 {
@@ -11,6 +12,7 @@ namespace CTPortaria.Repositories.Interfaces
         Task<List<GateLogModel>> GetByDayAsync(DateTime date);
         Task<List<GateLogModel>> GetByEmployeeAsync(int id);
         Task<List<GateLogModel>> SearchQueryAsync(GateLogSearchDTO searchQuery);
+        Task<bool> IsPersonInside(EPersonType personType, int? id);
 
         // Create
         Task<GateLogModel> CreateAsync(GateLogModel gateLogToCreate);

@@ -161,7 +161,14 @@ namespace CTPortaria.Services.Implementations
                 validationErrors.Add("Nome do porteiro inválido");
             }
 
-            if (validationErrors.Any())
+            var personType = gateLogToCreate.EmployeeId != null ? EPersonType.Employee : EPersonType.Visitor;
+            var personId = gateLogToCreate.EmployeeId != null ? gateLogToCreate.EmployeeId : gateLogToCreate.VisitorId;
+            if (await _repository.IsPersonInside(personType, personId))
+            {
+                validationErrors.Add("Pessoa já está dentro do local");
+            }
+            
+        if (validationErrors.Any())
             {
                 throw new ValidationException(validationErrors);
             }
