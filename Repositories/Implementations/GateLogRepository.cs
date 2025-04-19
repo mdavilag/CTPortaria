@@ -118,7 +118,12 @@ namespace CTPortaria.Repositories.Implementations
         {
             await _context.GateLogs.AddAsync(gateLogToCreate);
             await _context.SaveChangesAsync();
-            return gateLogToCreate;
+
+            var created = await _context.GateLogs
+                .Include(x => x.Employee)
+                .Include(x => x.Visitor)
+                .FirstOrDefaultAsync(x => x.Id == gateLogToCreate.Id);
+            return created;
         }
 
         public async Task<GateLogModel> UpdateAsync(GateLogModel gateLogToUpdate)

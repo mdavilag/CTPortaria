@@ -38,7 +38,7 @@ namespace CTPortaria.Controllers
         public async Task<IActionResult> CreateAsync([FromBody] VisitorCreateDTO visitorDto)
         {
             var created = await _service.CreateAsync(visitorDto);
-            return CreatedAtAction(nameof(GetByIdAsync),new {id = created.Id}, created);
+            return CreatedAtAction(nameof(GetByIdAsync),null, new {id = created.Id}, created);
         }
 
         [HttpPut("{id:int}")]
