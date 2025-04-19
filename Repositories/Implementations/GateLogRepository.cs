@@ -113,12 +113,31 @@ namespace CTPortaria.Repositories.Implementations
             return await query.AsNoTracking().ToListAsync();
         }
 
+        public async Task<bool> IsPersonInside(EPersonType personType, int? id)
+        {
+            if (personType == EPersonType.Employee)
+            {
+                return await _context.GateLogs
+                    .Where(x => x.EmployeeId == id && x.LeavedAt == null)
+                    .AnyAsync();
+            }
+
+            return await _context.GateLogs
+                .Where(x => x.VisitorId == id && x.LeavedAt == null)
+                .AnyAsync();
+        }
+
         // Create
         public async Task<GateLogModel> CreateAsync(GateLogModel gateLogToCreate)
         {
             await _context.GateLogs.AddAsync(gateLogToCreate);
             await _context.SaveChangesAsync();
-            return gateLogToCreate;
+
+            var created = await _context.GateLogs
+                .Include(x => x.Employee)
+                .Include(x => x.Visitor)
+                .FirstOrDefaultAsync(x => x.Id == gateLogToCreate.Id);
+            return created;
         }
 
         public async Task<GateLogModel> UpdateAsync(GateLogModel gateLogToUpdate)
